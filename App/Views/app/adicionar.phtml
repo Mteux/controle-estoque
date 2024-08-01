@@ -1,0 +1,68 @@
+<body>
+
+    <div class="corpo">
+        <div class="row">
+            <div class="col-md-2 " id="menu">
+                <div class="container">
+                    <div class="text-center">
+                        <a href="/dashboard"><img src="/img/logo.png" class="img-fluid rounded" alt="logo.png" width="150"></a>
+                    </div>
+
+                    <div>
+                        <ul class="list-group text-start">
+
+                            <li class="list-group-item list-group-item-action"><a href="/dashboard"><i class="fa-solid fa-box"></i>Produtos</a></li>
+                            <li class="list-group-item list-group-item-action"> <a href="#"><i class="fa-solid fa-angles-down"></i>Adicionar</a></li>
+                            <li class="list-group-item list-group-item-action"><a href="consultar.php"><i class="fa-regular fa-comment"></i>FeedBack</a></li>
+                            <li class="list-group-item list-group-item-action"><a href="/sair"><i class="fa-solid fa-right-from-bracket"></i>Sair</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-md-10" id="form-cad">
+                <div class="container mt-5 pb-5 ">
+                    <h3 class="mb-4">Adicione seus produtos</h3>
+                    <form method="post" action="/addProduto" class="form-group">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Produto: </label>
+                            <input class="form-control" type="text" name="produto" placeholder="Produto">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Valor: </label>
+                            <input class="form-control" type="text" name="valor" placeholder="Valor">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Quantidade: </label>
+                            <input class="form-control" type="number" name="quantidade" placeholder="Quantidade">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Categoria: </label>
+                            <select class="form-control" name="categoria" aria-label="Default select example">
+                                <option selected>Selecione a categoria</option>
+                                <option value="eletronico">Eletrônicos</option>
+                                <option value="alimentos">Alimentos</option>
+                                <option value="bebidas">Bebidas</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Descrição: </label>
+                                <textarea class="form-control" type="text" name="descricao"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-outline-dark btn-block">Adicionar </button>
+                        </div>
+
+                    </form>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+</body>

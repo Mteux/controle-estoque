@@ -1,0 +1,73 @@
+<body>
+
+    <div class="corpo">
+        <div class="row">
+            <div class="col-md-2 " id="menu">
+                <div class="container">
+                    <div class="text-center">
+                        <a href="/dashboard"><img src="/img/logo.png" class="img-fluid rounded" alt="logo.png" width="150"></a>
+                    </div>
+
+                    <div>
+                        <ul class="list-group text-start">
+
+                            <li class="list-group-item list-group-item-action"><a href="#"><i class="fa-solid fa-box"></i>Produtos</a></li>
+                            <li class="list-group-item list-group-item-action"> <a href="/adicionar"><i class="fa-solid fa-angles-down"></i>Adicionar</a></li>
+                            <li class="list-group-item list-group-item-action"><a href="consultar.php"><i class="fa-regular fa-comment"></i>FeedBack</a></li>
+                            <li class="list-group-item list-group-item-action"><a href="/sair"><i class="fa-solid fa-right-from-bracket"></i>Sair</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-md-10">
+                <div class="produtos container mt-5">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="titulo">Controle de Estoque</h1>
+                            <p>Estes sãos os itens que você possui em seu estoque:</p>
+                            <div>
+                                <table class="table table-dark table-hover">
+                                    <thead>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Produto</th>
+                                        <th scope="col">Valor</th>
+                                        <th scope="col">Quantidade</th>
+                                        <th scope="col">Categoria</th>
+                                        <th scope="col">Descrição</th>
+
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"><i class="fa-solid fa-filter" onclick="filtro()"></i></th>
+                                    </thead>
+
+                                    <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
+                                        <tbody>
+                                            <td><?= $produto['id'] ?></td>
+                                            <td><?= $produto['produto'] ?></td>
+                                            <td><?= $produto['valor'] ?></td>
+                                            <td><?= $produto['quantidade'] ?></td>
+                                            <td><?= $produto['categoria'] ?></td>
+                                            <td><?= $produto['descricao'] ?></td>
+
+                                            <td> <i class="fas fa-edit text-info"></i> </td>
+                                            <td><i class="fa-solid fa-md fa-trash text-info"></i></td>
+                                            <td><i class="fa-solid fa-check text-info"></i></td>
+                                        </tbody>
+
+                                    <?php } ?>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>

@@ -1,0 +1,29 @@
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6" id="container">
+                <div class="col-md-12">
+                    <form action="/registrar" method="post" class="form">
+                        <h3 class="text-center">Inscreva-se</h3>
+                        <div class="form-group">
+                            <label for="" class="text">Nome:</label><br>
+                            <input type="text" value="<?= $this->view->usuario['nome'] ?>" name="nome" class="form-control" placeholder="Nome">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text-">Email:</label><br>
+                            <input type="text" value="<?= $this->view->usuario['email'] ?>" name="email" class="form-control" placeholder="E-mail">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text">Senha:</label><br>
+                            <input type="password" value="<?= $this->view->usuario['senha']?>" name="senha" class="form-control" placeholder="Senha">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Inscrever-se</button>
+                        <?php if ($this->view->erroCadastro) { ?>
+                            <small class="form-text text-danger">*Erro ao realizar o cadastro, verifique se os campos foram preenchidos corretamente.</small>
+                        <?php } ?>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
