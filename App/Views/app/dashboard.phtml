@@ -28,24 +28,48 @@
                         <div class="col">
                             <h1 class="titulo">Controle de Estoque</h1>
                             <p>Estes sãos os itens que você possui em seu estoque:</p>
-                            <div>
+                            <div id="tabela">
+                                <a id="filtro" href="" onclick="filtrar()">Filtrar</a>
+
+                                <div>
+
+                                    <select name="Produtos" id="produtos">
+                                        <option value="">Selecione</option>
+                                        <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
+                                            <option value=""><?= $produto['produto'] ?></option>
+
+                                        <?php } ?>
+                                    </select>
+                                    Valor: <input type="range" min="0" max="">
+                                    Quantidade : <input type="range" min="0" max="">
+                                    <select name="Produtos" id="produtos">
+                                        <option value="#">Selecione</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="">Selecione</option>
+                                        <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
+                                            <option value=""><?= $produto['categoria'] ?></option>
+
+                                        <?php } ?>
+                                    </select>
+
+                                </div>
                                 <table class="table table-dark table-hover">
                                     <thead>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Produto</th>
-                                        <th scope="col">Valor</th>
-                                        <th scope="col">Quantidade</th>
-                                        <th scope="col">Categoria</th>
-                                        <th scope="col">Descrição</th>
+
+                                        <th scope="col" id="produto">Produto</th>
+                                        <th scope="col" id="valor">Valor</th>
+                                        <th scope="col" id="quantidade">Quantidade</th>
+                                        <th scope="col" id="categoria">Categoria</th>
+                                        <th scope="col" id="descricao">Descrição</th>
 
                                         <th scope="col"></th>
                                         <th scope="col"></th>
-                                        <th scope="col"><i class="fa-solid fa-filter" onclick="filtro()"></i></th>
+
                                     </thead>
 
                                     <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
                                         <tbody>
-                                            <td><?= $produto['id'] ?></td>
                                             <td><?= $produto['produto'] ?></td>
                                             <td><?= $produto['valor'] ?></td>
                                             <td><?= $produto['quantidade'] ?></td>

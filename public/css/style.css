@@ -42,7 +42,33 @@ li a {
 
 .tabela {
   height: 100vh;
+  display: flex;
 }
+
+#filtro {
+  display: flex;
+  float: right;
+  
+}
+#tabela a{
+  text-decoration: none;
+  text-decoration-color: black;
+  margin: 3px;
+  color:black;
+  border: 1px solid #212529;
+  padding: 2px;
+  border-radius: 10%;
+
+}
+
+#tabela a:hover {
+  background-color: black;
+  text-decoration: #EAEAEA;
+  color:#EAEAEA;
+  margin: 3px;
+  padding: 2px;
+}
+
 
 
 
