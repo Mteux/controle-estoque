@@ -29,12 +29,12 @@
                             <h1 class="titulo">Controle de Estoque</h1>
                             <p>Estes sãos os itens que você possui em seu estoque:</p>
                             <div id="tabela">
-                                <a id="filtro" href="" onclick="filtrar()">Filtrar</a>
+                                <a id="filtrar" href="" onclick="filtrar()">Filtrar</a>
 
-                                <div>
+                                <div id="filtro">
 
                                     <select name="Produtos" id="produtos">
-                                        <option value="">Selecione</option>
+                                        <option value="">Produtos</option>
                                         <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
                                             <option value=""><?= $produto['produto'] ?></option>
 
@@ -42,11 +42,9 @@
                                     </select>
                                     Valor: <input type="range" min="0" max="">
                                     Quantidade : <input type="range" min="0" max="">
-                                    <select name="Produtos" id="produtos">
-                                        <option value="#">Selecione</option>
-                                    </select>
+
                                     <select name="" id="">
-                                        <option value="">Selecione</option>
+                                        <option value="">Categoria</option>
                                         <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
                                             <option value=""><?= $produto['categoria'] ?></option>
 
