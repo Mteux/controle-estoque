@@ -29,29 +29,33 @@
                             <h1 class="titulo">Controle de Estoque</h1>
                             <p>Estes sãos os itens que você possui em seu estoque:</p>
                             <div id="tabela">
-                                <a id="filtrar" href="" onclick="filtrar()">Filtrar</a>
 
-                                <div id="filtro">
+                                <form action="" method="get">
+                                    <div id="filtro">
+                                        <a id="filtrar" href="" onclick="filtrar()">Filtrar</a>
+                                        <select name="Produtos" id="">
+                                            <option value="">Produtos</option>
+                                            <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
+                                                <option value=""><?= $produto['produto'] ?></option>
 
-                                    <select name="Produtos" id="produtos">
-                                        <option value="">Produtos</option>
-                                        <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
-                                            <option value=""><?= $produto['produto'] ?></option>
+                                            <?php } ?>
+                                        </select>
+                                        Valor minimo : <input type="number">
+                                        Valor maximo : <input type="number">
+                                        Quantidade máxima : <input type="number">
 
-                                        <?php } ?>
-                                    </select>
-                                    Valor: <input type="range" min="0" max="">
-                                    Quantidade : <input type="range" min="0" max="">
 
-                                    <select name="" id="">
-                                        <option value="">Categoria</option>
-                                        <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
-                                            <option value=""><?= $produto['categoria'] ?></option>
+                                        <select name="" id="">
+                                            <option value="">Categoria</option>
+                                            <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
+                                                <option value=""><?= $produto['categoria'] ?></option>
 
-                                        <?php } ?>
-                                    </select>
+                                            <?php } ?>
+                                        </select>
 
-                                </div>
+                                    </div>
+                                </form>
+
                                 <table class="table table-dark table-hover">
                                     <thead>
 
