@@ -28,35 +28,42 @@
                         <div class="col">
                             <h1 class="titulo">Controle de Estoque</h1>
                             <p>Estes sãos os itens que você possui em seu estoque:</p>
-                            <div id="tabela">
 
-                                <form action="" method="get">
+                            <a href="" id="btnFiltrar">Filtrar</a>
+                            <form action="" method="get">
+                                <div id="form-filtro">
+
+
                                     <div id="filtro">
-                                        <a id="filtrar" href="" onclick="filtrar()">Filtrar</a>
-                                        <select name="Produtos" id="">
-                                            <option value="">Produtos</option>
+                                        Produto
+                                        <select name="Produto" id="">
+                                            <option value="">Selecione</option>
                                             <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
                                                 <option value=""><?= $produto['produto'] ?></option>
 
                                             <?php } ?>
                                         </select>
-                                        Valor minimo : <input type="number">
-                                        Valor maximo : <input type="number">
-                                        Quantidade máxima : <input type="number">
-
-
-                                        <select name="" id="">
-                                            <option value="">Categoria</option>
+                                        Categoria
+                                        <select name="categoria" id="">
+                                            <option value="">Selecione</option>
                                             <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
                                                 <option value=""><?= $produto['categoria'] ?></option>
 
                                             <?php } ?>
-                                        </select>
-
+                                        </select> <br>
+                                        Valor minimo : <input type="number">
+                                        Valor maximo : <input type="number">
+                                        Quantidade : <input type="number">
+                                        <a id="" href="">Pesquisar</a>
                                     </div>
-                                </form>
 
-                                <table class="table table-dark table-hover">
+
+
+
+                                </div>
+                            </form>
+                            <div id="tabela">
+                                <table class="table table-hover">
                                     <thead>
 
                                         <th scope="col" id="produto">Produto</th>

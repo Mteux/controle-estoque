@@ -40,51 +40,67 @@ li a {
 
 }
 
+
+
 .tabela {
   height: 100vh;
+  display: flex;
 
 }
 
-#tabela a{
-  display: block;
+#btnFiltrar{
+  border: 1px solid #9C9C9C;
+  width: 75px;
+  height: 40px;
+  padding: 3px;
+  margin: auto;
+  float: right;
   text-decoration: none;
   text-align: center;
-  float: right;
-  color:rgb(10, 10, 10);
+  border-radius: 10%;
+  color: #212529;
+
+}
+
+#btnFiltrar:hover {
+  background-color: #212529;
+  color: #9C9C9C;
+  border: solid 1px #212529;
+}
+#form-filtro a{
   border: 2px solid #454c53;
-  padding: 2px;
   border-radius: 10%;
   width: 75px;
   height: 40px;
-  margin: auto;
-  transform: 0,3 seg;
+
 
 }
 
-#tabela a:hover {
+#form-filtro a:hover {
   background-color: rgb(39, 35, 35);
   text-decoration: #EAEAEA;
   color:#224e4e;
-  margin: auto;
   padding: 2px;
   text-align: center;
 }
 
-#filtro {
-  display: block;
-  clear: right;
+#form-filtro {
+  display: flex;
   width: 100%;
   height: 200px;
   padding: 5px;
   margin: 2px;
 
+
 }
-#filtro select {
+
+#filtro {
   display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 10px;
+  width: 100%;
+  padding-left: 3px;
+  position:relative;
+  border: 1px solid red;
+  display: block;
 
 }
 
