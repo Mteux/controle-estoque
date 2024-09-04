@@ -29,37 +29,45 @@
                             <h1 class="titulo">Controle de Estoque</h1>
                             <p>Estes sãos os itens que você possui em seu estoque:</p>
 
-                            <a href="" id="btnFiltrar">Filtrar</a>
-                            <form action="" method="get">
-                                <div id="form-filtro">
+                            <button type="button" class="btn btn-outline-dark btn-md" onclick="filtrar()">Filtrar</button>
+                            <form action="">
+                                <div class="text-center" id="form-filtro">
+                                    <div class="row">
+                                        <div class="col">
+                                            <Label class="form-label">Produto</Label>
+                                            <select name="produto" class="form-control">
+                                                <option value="">Selecione</option>
+                                                <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
+                                                    <option value=""><?= $produto['produto'] ?></option>
 
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <Label class="form-label">Categoria</Label>
+                                            <select name="categoria" class="form-control">
+                                                <option value="">Selecione</option>
+                                                <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
+                                                    <option value="<?= $produto['categoria'] ?>"><?= $produto['categoria'] ?></option>
 
-                                    <div id="filtro">
-                                        Produto
-                                        <select name="Produto" id="">
-                                            <option value="">Selecione</option>
-                                            <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
-                                                <option value=""><?= $produto['produto'] ?></option>
-
-                                            <?php } ?>
-                                        </select>
-                                        Categoria
-                                        <select name="categoria" id="">
-                                            <option value="">Selecione</option>
-                                            <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
-                                                <option value=""><?= $produto['categoria'] ?></option>
-
-                                            <?php } ?>
-                                        </select> <br>
-                                        Valor minimo : <input type="number">
-                                        Valor maximo : <input type="number">
-                                        Quantidade : <input type="number">
-                                        <a id="" href="">Pesquisar</a>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
                                     </div>
 
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <Label class="form-label">Valor máximo:</Label> <input class="form-control" type="number" name="vlrMaximo">
+                                        </div>
+                                        <div class="col">
+                                            <Label class="form-label">Valor minimo:</Label> <input class="form-control" type="number" name="vlrMinimo">
+                                        </div>
+                                        <div class="col">
+                                            <Label class="form-label">Quantidade:</Label> <input class="form-control" type="number" name="quantidade">
+                                        </div>
 
-
-
+                                    </div>
+                                    <button type="button" class="btn btn-outline-dark btn-md mt-2" id="pesquisar">Pesquisar</button>
                                 </div>
                             </form>
                             <div id="tabela">

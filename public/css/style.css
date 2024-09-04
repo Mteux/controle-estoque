@@ -48,62 +48,9 @@ li a {
 
 }
 
-#btnFiltrar{
-  border: 1px solid #9C9C9C;
-  width: 75px;
-  height: 40px;
-  padding: 3px;
-  margin: auto;
-  float: right;
-  text-decoration: none;
-  text-align: center;
-  border-radius: 10%;
-  color: #212529;
-
-}
-
-#btnFiltrar:hover {
-  background-color: #212529;
-  color: #9C9C9C;
-  border: solid 1px #212529;
-}
-#form-filtro a{
-  border: 2px solid #454c53;
-  border-radius: 10%;
-  width: 75px;
-  height: 40px;
-
-
-}
-
-#form-filtro a:hover {
-  background-color: rgb(39, 35, 35);
-  text-decoration: #EAEAEA;
-  color:#224e4e;
-  padding: 2px;
-  text-align: center;
-}
-
 #form-filtro {
-  display: flex;
-  width: 100%;
-  height: 200px;
-  padding: 5px;
-  margin: 2px;
-
-
+  display: none;
 }
-
-#filtro {
-  display: flex;
-  width: 100%;
-  padding-left: 3px;
-  position:relative;
-  border: 1px solid red;
-  display: block;
-
-}
-
 
 
 
