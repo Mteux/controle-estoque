@@ -87,11 +87,11 @@
 
                                     <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
                                         <tbody>
-                                            <td><?= $produto['produto'] ?></td>
-                                            <td><?= $produto['valor'] ?></td>
-                                            <td><?= $produto['quantidade'] ?></td>
-                                            <td><?= $produto['categoria'] ?></td>
-                                            <td><?= $produto['descricao'] ?></td>
+                                            <td class="produto"><?= $produto['produto'] ?></td>
+                                            <td class="valor"><?= $produto['valor'] ?></td>
+                                            <td class="quantidade"><?= $produto['quantidade'] ?></td>
+                                            <td class="categoria"><?= $produto['categoria'] ?></td>
+                                            <td class="descricao"><?= $produto['descricao'] ?></td>
 
                                             <td> <i class="fas fa-edit text-info"></i> </td>
                                             <td><i class="fa-solid fa-md fa-trash text-info"></i></td>
