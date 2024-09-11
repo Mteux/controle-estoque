@@ -1,17 +1,37 @@
-body  {
+html, body  {
   margin: 0;
   padding: 0;
-  
-  height: 100vh;
+  height: 100%;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+#menu ul li{
+  list-style: none;
+  margin-bottom: 2px;
+
+
+
+}
+
+#menu ul li a {
+	color: #212529;
+  margin-left: 5px;
+
+}
 li a:hover {
 	text-decoration: none;
+
+}
+#nav-lat {
+  text-align: start;
 }
 
-li a {
-	color: #212529;
-}
+
+
 
 #login .container #login-row #login-column #login-box {
   margin-top: 120px;
@@ -28,12 +48,7 @@ li a {
 }
 
 
-#menu {
-  height: 100vh;
-  
-  
-  
-}
+
 
 .itens {
   padding-left: 5px;
