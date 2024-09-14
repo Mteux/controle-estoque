@@ -57,6 +57,19 @@ class Route extends Bootstrap
 			'action' => 'addProduto'
 		);
 
+		$routes['feedback'] = array(
+			'route' => '/feedback',
+			'controller' => 'AppController',
+			'action' => 'feedback'
+		);
+
+		$routes['enviar'] = array(
+			'route' => '/enviar',
+			'controller' => 'AppController',
+			'action' => 'enviar'
+		);
+
+
 
 		$this->setRoutes($routes);
 	}

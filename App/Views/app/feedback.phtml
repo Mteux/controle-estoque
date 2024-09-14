@@ -12,8 +12,8 @@
                         <ul class="list-group text-start">
 
                             <li class="list-group-item list-group-item-action"><i class="fa-solid fa-box"></i><a href="/dashboard">Produtos</a></li>
-                            <li class="list-group-item list-group-item-action"> <i class="fa-solid fa-angles-down"></i><a href="#">Adicionar</a></li>
-                            <li class="list-group-item list-group-item-action"><i class="fa-regular fa-comment"></i><a href="/feedback">FeedBack</a></li>
+                            <li class="list-group-item list-group-item-action"> <i class="fa-solid fa-angles-down"></i><a href="/adicionar">Adicionar</a></li>
+                            <li class="list-group-item list-group-item-action"><i class="fa-regular fa-comment"></i><a href="#">FeedBack</a></li>
                             <li class="list-group-item list-group-item-action"><i class="fa-solid fa-right-from-bracket"></i><a href="/sair">Sair</a></li>
                         </ul>
                     </div>
@@ -25,7 +25,21 @@
             <div class="col-md-10" id="form-cad">
                 <div class="container mt-5 pb-5 ">
 
+                    <h2>Envie um feedback para o nosso time!</h2>
+                    <p>Sua opnião vale muito, por favor dê sua sugestão. </p>
 
+                    <form action="/enviar" method="post" class="form-group">
+                        <div>
+                            <label for="" class="form-label">Titulo </label>
+                            <input type="text" class="form-control" name="titulo" id="">
+                        </div>
+                        <div>
+                            <label for="" class="form-label">Digite sua sugestão:</label>
+                            <textarea name="sugestao" id="" class="form-control"></textarea>
+                        </div>
+                        <button type="submit" class="mt-2 btn btn-outline-secondary">Enviar</button>
+
+                    </form>
                 </div>
             </div>
         </div>

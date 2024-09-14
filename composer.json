@@ -1,7 +1,8 @@
 {
-	"name": "controle-estoque",
+	"name": "mateus/controle-estoque",
 	"require": {
-		"php": ">= 7.0"
+		"php": ">= 7.0",
+		"mailjet/mailjet-apiv3-php": "^1.6"
 	},
 	"authors": [
 		{
