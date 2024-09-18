@@ -6,7 +6,7 @@ namespace App\Controllers;
 use MF\Controller\Action;
 use MF\Model\Container;
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 use \Mailjet\Resources;
 
@@ -92,14 +92,14 @@ class AppController extends Action
         if ($_SESSION['id'] != '' && $_SESSION['nome'] != '') {
 
 
-            $mj = new \Mailjet\Client(getenv('50b5bb65b705a2b1c3bb3a9bef3bf1ff'), getenv('2b76ab3cd1fd4519700c3d4d9146d514'), true, ['version' => 'v3.1']);
+            $mj = new \Mailjet\Client('887e579677d578c12777f0b91794c80a', 'c88cd3a39d3528411128b68a93d8fe0e', true, ['version' => 'v3.1']);
 
             $body = [
                 'Messages' => [
                     [
                         'From' => [
                             'Email' => "imateos1798@gmail.com",
-                            'Name' => "this.usuario['name']"
+                            'Name' => $_SESSION['nome']
                         ],
                         'To' => [
                             [
@@ -107,15 +107,28 @@ class AppController extends Action
                                 'Name' => "Mateus"
                             ]
                         ],
-                        'Subject' => "My first Mailjet Email!",
-                        'TextPart' => "Greetings from Mailjet!",
-                        'HTMLPart' => "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3>
-                        <br />May the delivery force be with you!"
+                        'Subject' => $_POST['titulo'],
+                        'TextPart' => $_POST['sugestao'],
+                        'HTMLPart' => $_POST['sugestao']
                     ]
                 ]
             ];
+
+            // All resources are located in the Resources class
+
+            $response = $mj->post(Resources::$Email, ['body' => $body]);
+
+            // Read the response
+
+            if ($response->success()) {
+                echo 'E-mail enviado com sucesso!';  // Feedback simples para sucesso
+            } else {
+                echo 'Erro ao enviar o e-mail: ' . $response->getReasonPhrase();  // Feedback em caso de erro
+            }
         } else {
+            // Redireciona para página de login em caso de falha de sessão
             header('Location: /?login=erro');
+            exit();
         }
     }
 }
