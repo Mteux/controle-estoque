@@ -114,14 +114,14 @@ class AppController extends Action
                 ]
             ];
 
-            // All resources are located in the Resources class
 
-            $response = $mj->post(Resources::$Email, ['body' => $body]);
 
-            // Read the response
+            $response = $mj->post(\Mailjet\Resources::$Email, ['body' => $body]);
+
 
             if ($response->success()) {
-                echo 'E-mail enviado com sucesso!';  // Feedback simples para sucesso
+                $response->success() && var_dump($response->getData());
+                header('Location: /feedback?sucesso=1');
             } else {
                 echo 'Erro ao enviar o e-mail: ' . $response->getReasonPhrase();  // Feedback em caso de erro
             }
@@ -129,6 +129,67 @@ class AppController extends Action
             // Redireciona para página de login em caso de falha de sessão
             header('Location: /?login=erro');
             exit();
+        }
+    }
+
+    public function exportar()
+    {
+        session_start();
+        if ($_SESSION['id'] != '' && $_SESSION['nome'] != '') {
+            $produto = Container::getModel('Produto');
+            $produto->__set('id_usuario', $_SESSION['id']);
+
+            $produtos = $produto->getAll();
+
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="produtos.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Começa a escrever o conteúdo da planilha como uma tabela HTML
+            echo "<table border='1'>";
+            echo "<tr>
+                    <th>Produto</th>
+                    <th>Valor</th>
+                    <th>Quantidade</th>
+                    <th>Categoria</th>
+                    <th>Descrição</th>
+                </tr>";
+
+            foreach ($produtos as $produto) {
+                echo "<tr>";
+                echo "<td>{$produto['produto']}</td>";
+                echo "<td>{$produto['valor']}</td>";
+                echo "<td>{$produto['quantidade']}</td>";
+                echo "<td>{$produto['categoria']}</td>";
+                echo "<td>{$produto['descricao']}</td>";
+                echo "</tr>";
+            }
+
+            echo "</table>";
+            exit;
+        } else {
+            // Redireciona para página de login em caso de falha de sessão
+            header('Location: /?login=erro');
+            exit();
+        }
+    }
+
+    public function deletarProduto()
+    {
+        session_start();
+    
+        if (!empty($_SESSION['id'])) {
+            $produto = Container::getModel('Produto');
+            $produto->__set('id', $_GET['id']);
+            $produto->__set('id_usuario', $_SESSION['id']);
+    
+            if ($produto->deletar()) {
+                echo 'success';
+            } else {
+                echo 'erro ao excluir produto';
+            }
+        } else {
+            header('Location: /?login=erro');
         }
     }
 }

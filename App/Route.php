@@ -69,8 +69,20 @@ class Route extends Bootstrap
 			'action' => 'enviar'
 		);
 
+		$routes['exportar'] = array(
+			'route' => '/exportar',
+			'controller' => 'AppController',
+			'action' => 'exportar'
+		);
+		
+		$routes['deletar_produto'] = array(
+			'route' => '/deletar-produto',
+			'controller' => 'AppController',
+			'action' => 'deletarProduto'
+		);
 
 
 		$this->setRoutes($routes);
 	}
+	
 }

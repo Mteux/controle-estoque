@@ -30,26 +30,38 @@
                             <p>Estes sãos os itens que você possui em seu estoque:</p>
 
                             <button type="button" class="btn btn-outline-dark btn-md" onclick="filtrar()">Filtrar</button>
+                            <a href="/exportar" class="btn btn-outline-dark btn-md">Exportar</a>
                             <form action="">
                                 <div class="text-center" id="form-filtro">
                                     <div class="row">
                                         <div class="col">
+                                            <!-- Produto -->
                                             <Label class="form-label">Produto</Label>
                                             <select name="produto" class="form-control" id="filtro-produto">
-                                                <option>Selecione</option>
-                                                <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
-                                                    <option value="<?= $produto['produto'] ?>"><?= $produto['produto'] ?></option>
-
-                                                <?php } ?>
+                                                <option value="">Selecione</option>
+                                                <?php
+                                                $verificados = [];
+                                                foreach ($this->view->produtos as $produto) {
+                                                    $nomeNormalizado = trim(mb_strtolower($produto['produto']));
+                                                    if (!in_array($nomeNormalizado, $verificados)) {
+                                                        $verificados[] = $nomeNormalizado;
+                                                ?>
+                                                        <option value="<?= htmlspecialchars($produto['produto']) ?>"><?= htmlspecialchars($produto['produto']) ?></option>
+                                                <?php
+                                                    }
+                                                }
+                                                ?>
                                             </select>
                                         </div>
                                         <div class="col">
                                             <Label class="form-label">Categoria</Label>
                                             <select name="categoria" class="form-control" id="filtro-categoria">
                                                 <option value="">Selecione</option>
-                                                <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
-                                                    <option value="<?= $produto['categoria'] ?>"><?= $produto['categoria'] ?></option>
-
+                                                <?php
+                                                $categoriasUnicas = array_unique(array_column($this->view->produtos, 'categoria'));
+                                                foreach ($categoriasUnicas as $categoria) {
+                                                ?>
+                                                    <option value="<?= $categoria ?>"><?= $categoria ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
@@ -85,20 +97,20 @@
 
                                     </thead>
 
-                                    <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
-                                        <tbody>
-                                            <td class="produto"><?= $produto['produto'] ?></td>
-                                            <td class="valor"><?= $produto['valor'] ?></td>
-                                            <td class="quantidade"><?= $produto['quantidade'] ?></td>
-                                            <td class="categoria"><?= $produto['categoria'] ?></td>
-                                            <td class="descricao"><?= $produto['descricao'] ?></td>
-
-                                            <td> <i class="fas fa-edit text-info"></i> </td>
-                                            <td><i class="fa-solid fa-md fa-trash text-info"></i></td>
-                                            <td><i class="fa-solid fa-check text-info"></i></td>
-                                        </tbody>
-
-                                    <?php } ?>
+                                    <tbody>
+                                        <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
+                                            <tr data-id="<?= $produto['id'] ?>">
+                                                <td class="produto"><?= $produto['produto'] ?></td>
+                                                <td class="valor"><?= $produto['valor'] ?></td>
+                                                <td class="quantidade"><?= $produto['quantidade'] ?></td>
+                                                <td class="categoria"><?= $produto['categoria'] ?></td>
+                                                <td class="descricao"><?= $produto['descricao'] ?></td>
+                                                <td><i class="fas fa-edit text-info"></i></td>
+                                                <td><i class="fa-solid fa-md fa-trash text-info deletar-produto" style="cursor: pointer;"></i></td>
+                                                <td><i class="fa-solid fa-check text-info"></i></td>
+                                            </tr>
+                                        <?php } ?>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

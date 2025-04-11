@@ -5,7 +5,8 @@ namespace App\Models;
 
 use MF\Model\Model;
 
-class Produto extends Model {
+class Produto extends Model
+{
     private $id;
     private $id_usuario;
     private $produto;
@@ -25,7 +26,8 @@ class Produto extends Model {
 
 
     //salvar
-    public function salvar() {
+    public function salvar()
+    {
         $query = "insert into produtos(id_usuario, produto, valor, quantidade, categoria, descricao)values(:id_usuario, :produto, :valor, :quantidade, :categoria, :descricao)";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
@@ -42,7 +44,8 @@ class Produto extends Model {
 
     //recuperar
 
-    public function getAll() {
+    public function getAll()
+    {
 
         $query = "
             select 
@@ -59,10 +62,15 @@ class Produto extends Model {
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 
+    public function deletar()
+    {
+        $query = "DELETE FROM produtos WHERE id = :id AND id_usuario = :id_usuario";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
+
+        return $stmt->execute();
     }
 }
-
-
-
-?>
