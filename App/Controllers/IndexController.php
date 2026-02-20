@@ -18,15 +18,14 @@ class IndexController extends Action
 
 	public function inscreverse()
 	{
-
+		echo "<!-- Método inscreverse foi chamado -->";
+		
 		$this->view->usuario = array(
 			'nome' => '',
 			'email' => '',
 			'senha' => '',
 		);
-
 		$this->view->erroCadastro = false;
-
 		$this->render('inscreverse');
 	}
 

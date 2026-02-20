@@ -1,23 +1,44 @@
 <div class="container">
-    <div class="d-flex justify-content-center mt-5">
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
         <div class="card" style="width: 36rem;">
-            <div class="card-body">
+            <div class="card-header bg-success text-white text-center">
+                <i class="fas fa-check-circle fa-3x"></i>
+            </div>
+            <div class="card-body text-center">
+                <h2 class="text-success mb-4">Cadastro realizado com sucesso!</h2>
+                
+                <div class="mb-4">
+                    <i class="fas fa-user-check fa-4x text-success"></i>
+                </div>
+                
+                <p class="lead">Sua conta foi criada e já está pronta para uso.</p>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    Agora você pode fazer login e começar a gerenciar seu estoque.
+                </div>
 
-
-
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col">
-                        <h2>Cadastro realizado com sucesso</h2>
+                        <a href="/" class="btn btn-success btn-lg btn-block">
+                            <i class="fas fa-sign-in-alt"></i> Fazer Login
+                        </a>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col">
-                        <a href="/" class="btn btn-primary btn-block">Clique aqui para fazer login!</a>
-                    </div>
+                <div class="mt-4">
+                    <small class="text-muted">
+                        <i class="fas fa-clock"></i> Você será redirecionado em 5 segundos...
+                    </small>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
+
+<script>
+// Redirecionamento automático
+setTimeout(function() {
+    window.location.href = '/';
+}, 5000);
+</script>

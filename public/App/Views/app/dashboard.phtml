@@ -1,0 +1,126 @@
+<body>
+
+    <div class="corpo">
+        <div class="row">
+            <div class="col-md-2 " id="menu">
+                <nav class="container">
+                    <div class="text-center">
+                        <a href="/dashboard"><img src="/img/logo.png" class="img-fluid rounded" alt="logo.png" width="150"></a>
+                    </div>
+
+                    <div id="menu">
+                        <ul class="list-group text-start">
+
+                            <li class="list-group-item list-group-item-action"><i class="fa-solid fa-box"></i><a href="#">Produtos</a></li>
+                            <li class="list-group-item list-group-item-action"> <i class="fa-solid fa-angles-down"></i><a href="/adicionar">Adicionar</a></li>
+                            <li class="list-group-item list-group-item-action"><i class="fa-regular fa-comment"></i><a href="/feedback">FeedBack</a></li>
+                            <li class="list-group-item list-group-item-action"><i class="fa-solid fa-right-from-bracket"></i><a href="/sair">Sair</a></li>
+                        </ul>
+                    </div>
+                </nav>
+
+
+            </div>
+
+            <div class="col-md-10">
+                <div class="produtos container mt-5">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="titulo">Controle de Estoque</h1>
+                            <p>Estes sãos os itens que você possui em seu estoque:</p>
+
+                            <button type="button" class="btn btn-outline-dark btn-md" onclick="filtrar()">Filtrar</button>
+                            <a href="/exportar" class="btn btn-outline-dark btn-md">Exportar</a>
+                            <form action="">
+                                <div class="text-center" id="form-filtro">
+                                    <div class="row">
+                                        <div class="col">
+                                            <!-- Produto -->
+                                            <Label class="form-label">Produto</Label>
+                                            <select name="produto" class="form-control" id="filtro-produto">
+                                                <option value="">Selecione</option>
+                                                <?php
+                                                $verificados = [];
+                                                foreach ($this->view->produtos as $produto) {
+                                                    $nomeNormalizado = trim(mb_strtolower($produto['produto']));
+                                                    if (!in_array($nomeNormalizado, $verificados)) {
+                                                        $verificados[] = $nomeNormalizado;
+                                                ?>
+                                                        <option value="<?= htmlspecialchars($produto['produto']) ?>"><?= htmlspecialchars($produto['produto']) ?></option>
+                                                <?php
+                                                    }
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <Label class="form-label">Categoria</Label>
+                                            <select name="categoria" class="form-control" id="filtro-categoria">
+                                                <option value="">Selecione</option>
+                                                <?php
+                                                $categoriasUnicas = array_unique(array_column($this->view->produtos, 'categoria'));
+                                                foreach ($categoriasUnicas as $categoria) {
+                                                ?>
+                                                    <option value="<?= $categoria ?>"><?= $categoria ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <Label class="form-label">Valor máximo:</Label> <input class="form-control" type="number" name="vlrMaximo" id="vlrMaximo">
+                                        </div>
+                                        <div class="col">
+                                            <Label class="form-label">Valor minimo:</Label> <input class="form-control" type="number" name="vlrMinimo" id="vlrMinimo">
+                                        </div>
+                                        <div class="col">
+                                            <Label class="form-label">Quantidade:</Label> <input class="form-control" type="number" name="quantidade" id="quantidade">
+                                        </div>
+
+                                    </div>
+                                    <button type="button" class="btn btn-outline-dark btn-md mt-2" id="pesquisar">Pesquisar</button>
+                                </div>
+                            </form>
+                            <div id="tabela">
+                                <table class="table table-hover" id="tabela">
+                                    <thead>
+
+                                        <th scope="col">Produto</th>
+                                        <th scope="col">Valor</th>
+                                        <th scope="col">Quantidade</th>
+                                        <th scope="col">Categoria</th>
+                                        <th scope="col">Descrição</th>
+
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+
+                                    </thead>
+
+                                    <tbody>
+                                        <?php foreach ($this->view->produtos as $id_produto => $produto) { ?>
+                                            <tr data-id="<?= $produto['id'] ?>">
+                                                <td class="produto"><?= $produto['produto'] ?></td>
+                                                <td class="valor"><?= $produto['valor'] ?></td>
+                                                <td class="quantidade"><?= $produto['quantidade'] ?></td>
+                                                <td class="categoria"><?= $produto['categoria'] ?></td>
+                                                <td class="descricao"><?= $produto['descricao'] ?></td>
+                                                <td><i class="fas fa-edit text-info"></i></td>
+                                                <td><i class="fa-solid fa-md fa-trash text-info deletar-produto" style="cursor: pointer;"></i></td>
+                                                <td><i class="fa-solid fa-check text-info"></i></td>
+                                            </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>

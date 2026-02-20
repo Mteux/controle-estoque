@@ -1,29 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Sistema de Estoque</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            transition: transform 0.3s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+    </style>
+</head>
 <body>
     <div class="container">
-        <div class="row justify-content-center align-items-center">
-            <div class="col-md-6" id="container">
-                <div class="col-md-12">
-                    <form action="/registrar" method="post" class="form">
-                        <h3 class="text-center">Inscreva-se</h3>
-                        <div class="form-group">
-                            <label for="" class="text">Nome:</label><br>
-                            <input type="text" value="<?= $this->view->usuario['nome'] ?>" name="nome" class="form-control" placeholder="Nome">
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="text-">Email:</label><br>
-                            <input type="text" value="<?= $this->view->usuario['email'] ?>" name="email" class="form-control" placeholder="E-mail">
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="text">Senha:</label><br>
-                            <input type="password" value="<?= $this->view->usuario['senha']?>" name="senha" class="form-control" placeholder="Senha">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Inscrever-se</button>
-                        <?php if ($this->view->erroCadastro) { ?>
-                            <small class="form-text text-danger">*Erro ao realizar o cadastro, verifique se os campos foram preenchidos corretamente.</small>
-                        <?php } ?>
-                    </form>
+        <div class="row justify-content-center align-items-center" style="min-height: 100vh;">
+            <div class="col-md-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header text-white text-center py-4">
+                        <i class="fas fa-user-plus fa-3x mb-3"></i>
+                        <h3 class="mb-0 font-weight-bold">Criar Nova Conta</h3>
+                        <p class="mb-0 mt-2">Preencha os dados abaixo para se cadastrar</p>
+                    </div>
+
+                    <div class="card-body p-5">
+                        <form action="/registrar" method="post" class="form" id="form-registro">
+                            <!-- Nome Completo -->
+                            <div class="form-group mb-4">
+                                <label for="nome" class="font-weight-bold text-primary">
+                                    <i class="fas fa-user mr-2"></i>Nome Completo:
+                                </label>
+                                <input type="text" 
+                                       value="<?php echo isset($this->view->usuario['nome']) ? htmlspecialchars($this->view->usuario['nome']) : ''; ?>" 
+                                       name="nome" 
+                                       class="form-control form-control-lg" 
+                                       id="nome" 
+                                       placeholder="Digite seu nome completo" 
+                                       required>
+                            </div>
+
+                            <!-- E-mail -->
+                            <div class="form-group mb-4">
+                                <label for="email" class="font-weight-bold text-primary">
+                                    <i class="fas fa-envelope mr-2"></i>E-mail:
+                                </label>
+                                <input type="email" 
+                                       value="<?php echo isset($this->view->usuario['email']) ? htmlspecialchars($this->view->usuario['email']) : ''; ?>" 
+                                       name="email" 
+                                       class="form-control form-control-lg" 
+                                       id="email" 
+                                       placeholder="Digite seu e-mail" 
+                                       required>
+                            </div>
+
+                            <!-- Senha -->
+                            <div class="form-group mb-4">
+                                <label for="senha" class="font-weight-bold text-primary">
+                                    <i class="fas fa-lock mr-2"></i>Senha:
+                                </label>
+                                <input type="password" 
+                                       name="senha" 
+                                       class="form-control form-control-lg" 
+                                       id="senha" 
+                                       placeholder="Digite sua senha" 
+                                       required 
+                                       minlength="6">
+                                <small class="text-muted">Mínimo de 6 caracteres</small>
+                            </div>
+
+                            <!-- Mensagem de Erro -->
+                            <?php if (isset($this->view->erroCadastro) && $this->view->erroCadastro) { ?>
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Erro ao cadastrar. Verifique os dados e tente novamente.
+                                </div>
+                            <?php } ?>
+
+                            <!-- Botões -->
+                            <div class="row mt-4">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                        <i class="fas fa-user-plus mr-2"></i>Cadastrar
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="/" class="btn btn-outline-secondary btn-lg btn-block">
+                                        <i class="fas fa-arrow-left mr-2"></i>Voltar
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </body>
+</html>

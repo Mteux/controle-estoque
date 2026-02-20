@@ -1,77 +1,175 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Esconde o filtro inicialmente (opcional)
-  document.getElementById("form-filtro").style.display = "none";
+// ===== FUNÇÕES DE FILTRO =====
 
-  // Adiciona evento ao botão pesquisar
-  document.getElementById("pesquisar").addEventListener("click", function () {
-    let produto = document.getElementById("filtro-produto").value.toLowerCase();
-    let categoria = document
-      .getElementById("filtro-categoria")
-      .value.toLowerCase();
-    let vlrMaximo =
-      parseFloat(document.getElementById("vlrMaximo").value) || Infinity;
-    let vlrMinimo = parseFloat(document.getElementById("vlrMinimo").value) || 0;
-    let quantidade =
-      parseInt(document.getElementById("quantidade").value) || null;
-
-    let linhas = Array.from(document.querySelectorAll("#tabela tbody tr"));
-
-    linhas.forEach(function (linha) {
-      let prodTable = linha.querySelector(".produto").innerText.toLowerCase();
-      let valorTable = parseFloat(
-        linha
-          .querySelector(".valor")
-          .innerText.replace("R$", "")
-          .replace(",", ".")
-      );
-      let quantTable = parseInt(linha.querySelector(".quantidade").innerText);
-      let cateTable = linha.querySelector(".categoria").innerText.toLowerCase();
-
-      let exibir = true;
-
-      if (produto && !prodTable.includes(produto)) exibir = false;
-      if (categoria && !cateTable.includes(categoria)) exibir = false;
-      if (valorTable < vlrMinimo || valorTable > vlrMaximo) exibir = false;
-      if (quantidade !== null && quantTable !== quantidade) exibir = false;
-
-      linha.style.display = exibir ? "" : "none";
-    });
-  });
-});
-
-// Mostrar/esconder o formulário
+// Mostrar/esconder formulário de filtro
 function filtrar() {
-  let modFiltro = document.getElementById("form-filtro");
-  modFiltro.style.display =
-    modFiltro.style.display === "none" ? "block" : "none";
+  let formFiltro = document.getElementById("form-filtro");
+  if (formFiltro) {
+    if (
+      formFiltro.style.display === "none" ||
+      formFiltro.style.display === ""
+    ) {
+      formFiltro.style.display = "block";
+    } else {
+      formFiltro.style.display = "none";
+    }
+  }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+// Limpar todos os filtros
+function limparFiltros() {
+  // Limpar campos
+  document.getElementById("filtro-produto").value = "";
+  document.getElementById("filtro-categoria").value = "";
+  document.getElementById("vlrMaximo").value = "";
+  document.getElementById("vlrMinimo").value = "";
+  document.getElementById("quantidade").value = "";
+
+  // Mostrar todas as linhas
+  let linhas = document.querySelectorAll("#tabela tbody tr");
+  linhas.forEach((linha) => {
+    linha.style.display = "";
+  });
+
+  // Mostrar mensagem
+  alert("Filtros limpos!");
+}
+
+// Aplicar filtros
+function aplicarFiltro() {
+  // Pegar valores dos filtros
+  let produto = document.getElementById("filtro-produto").value.toLowerCase();
+  let categoria = document
+    .getElementById("filtro-categoria")
+    .value.toLowerCase();
+  let vlrMaximo = document.getElementById("vlrMaximo").value;
+  let vlrMinimo = document.getElementById("vlrMinimo").value;
+  let quantidade = document.getElementById("quantidade").value;
+
+  // Converter valores para número
+  vlrMaximo = vlrMaximo ? parseFloat(vlrMaximo) : Infinity;
+  vlrMinimo = vlrMinimo ? parseFloat(vlrMinimo) : 0;
+  quantidade = quantidade ? parseInt(quantidade) : null;
+
+  // Pegar todas as linhas da tabela
+  let linhas = document.querySelectorAll("#tabela tbody tr");
+  let encontrados = 0;
+
+  linhas.forEach((linha) => {
+    // Pegar valores da linha
+    let prodTable =
+      linha.querySelector(".produto")?.innerText.toLowerCase() || "";
+    let valorText = linha.querySelector(".valor")?.innerText || "R$ 0,00";
+    let quantTable = linha.querySelector(".quantidade")?.innerText || "0";
+    let cateTable =
+      linha.querySelector(".categoria")?.innerText.toLowerCase() || "";
+
+    // Limpar o valor para comparação (remover R$, pontos, vírgulas)
+    let valorTable =
+      parseFloat(
+        valorText.replace("R$", "").replace(/\./g, "").replace(",", "."),
+      ) || 0;
+    quantTable = parseInt(quantTable) || 0;
+
+    // Aplicar filtros
+    let mostrar = true;
+
+    if (produto && !prodTable.includes(produto)) mostrar = false;
+    if (categoria && !cateTable.includes(categoria)) mostrar = false;
+    if (valorTable < vlrMinimo || valorTable > vlrMaximo) mostrar = false;
+    if (quantidade !== null && quantTable !== quantidade) mostrar = false;
+
+    // Mostrar ou esconder a linha
+    if (mostrar) {
+      linha.style.display = "";
+      encontrados++;
+    } else {
+      linha.style.display = "none";
+    }
+  });
+}
+
+// ===== FUNÇÕES DE EXCLUSÃO =====
+function initDeleteButtons() {
   document.querySelectorAll(".deletar-produto").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const row = btn.closest("tr");
-      const id = row.getAttribute("data-id");
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const row = this.closest("tr");
+      const id = row?.getAttribute("data-id");
+      const produto = row?.querySelector(".produto")?.innerText || "Produto";
 
       if (!id) {
         alert("ID do produto não encontrado.");
         return;
       }
 
-      if (confirm("Deseja realmente excluir este produto?")) {
+      if (confirm(`Deseja realmente excluir o produto "${produto}"?`)) {
+        // Aqui você pode adicionar a lógica de exclusão via AJAX
         fetch(`/deletar-produto?id=${id}`)
           .then((response) => response.text())
           .then((data) => {
             if (data.trim() === "success") {
               row.remove();
+              alert("Produto excluído com sucesso!");
             } else {
               alert("Erro ao excluir produto.");
             }
           })
           .catch((error) => {
-            console.error("Erro na requisição:", error);
+            console.error("Erro:", error);
             alert("Erro ao excluir produto.");
           });
       }
     });
   });
+}
+
+// ===== FUNÇÕES DE EXCLUSÃO =====
+function initDeleteButtons() {
+  let botoes = document.querySelectorAll(".deletar-produto");
+
+  botoes.forEach((botao) => {
+    botao.onclick = function (e) {
+      e.preventDefault();
+
+      let linha = this.closest("tr");
+      let id = linha.getAttribute("data-id");
+      let produto = linha.querySelector(".produto")?.innerText || "Produto";
+
+      if (!id) {
+        alert("ID do produto não encontrado!");
+        return;
+      }
+
+      if (confirm(`Tem certeza que deseja excluir o produto "${produto}"?`)) {
+        // Redireciona para a URL de exclusão
+        window.location.href = `/deletar-produto?id=${id}`;
+      }
+    };
+  });
+}
+// ===== INICIALIZAÇÃO =====
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("DOM carregado - inicializando sistema");
+
+  // Esconder filtro inicialmente
+  let formFiltro = document.getElementById("form-filtro");
+  if (formFiltro) {
+    formFiltro.style.display = "none";
+  }
+
+  // Adicionar evento ao botão pesquisar
+  let btnPesquisar = document.getElementById("pesquisar");
+  if (btnPesquisar) {
+    btnPesquisar.addEventListener("click", aplicarFiltro);
+  }
+
+  // Inicializar botões de exclusão
+  initDeleteButtons();
+
+  // Inicializar botões de check
+  initCheckButtons();
+
+  console.log("Sistema inicializado com sucesso!");
 });

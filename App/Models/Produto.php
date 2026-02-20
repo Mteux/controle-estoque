@@ -68,9 +68,45 @@ class Produto extends Model
     {
         $query = "DELETE FROM produtos WHERE id = :id AND id_usuario = :id_usuario";
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':id', $this->__get('id'));
-        $stmt->bindValue(':id_usuario', $this->__get('id_usuario'));
-
+        $stmt->bindValue(':id', $this->__get('id'), \PDO::PARAM_INT);
+        $stmt->bindValue(':id_usuario', $this->__get('id_usuario'), \PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function getPorId()
+    {
+        $query = "SELECT * FROM produtos WHERE id = :id AND id_usuario = :id_usuario";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'), \PDO::PARAM_INT);
+        $stmt->bindValue(':id_usuario', $this->__get('id_usuario'), \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Atualiza os dados do produto
+     */
+    public function atualizar()
+    {
+        $query = "UPDATE produtos SET 
+                produto = :produto, 
+                valor = :valor, 
+                quantidade = :quantidade, 
+                categoria = :categoria, 
+                descricao = :descricao 
+                WHERE id = :id AND id_usuario = :id_usuario";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'), \PDO::PARAM_INT);
+        $stmt->bindValue(':id_usuario', $this->__get('id_usuario'), \PDO::PARAM_INT);
+        $stmt->bindValue(':produto', $this->__get('produto'), \PDO::PARAM_STR);
+        $stmt->bindValue(':valor', $this->__get('valor'), \PDO::PARAM_STR);
+        $stmt->bindValue(':quantidade', $this->__get('quantidade'), \PDO::PARAM_INT);
+        $stmt->bindValue(':categoria', $this->__get('categoria'), \PDO::PARAM_STR);
+        $stmt->bindValue(':descricao', $this->__get('descricao'), \PDO::PARAM_STR);
+        
+        return $stmt->execute();
+    }
+
+
 }

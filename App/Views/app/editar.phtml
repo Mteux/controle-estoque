@@ -1,0 +1,91 @@
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">
+                <i class="fas fa-edit"></i> Editar Produto
+            </h3>
+        </div>
+        <div class="card-body">
+            
+            <?php if (isset($_GET['erro'])): ?>
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i> Erro ao atualizar o produto. Tente novamente.
+                </div>
+            <?php endif; ?>
+            
+            <form action="/atualizar-produto" method="post">
+                <input type="hidden" name="id" value="<?= $this->view->produto['id'] ?>">
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="produto">Produto:</label>
+                            <input type="text" class="form-control" id="produto" name="produto" 
+                                   value="<?= htmlspecialchars($this->view->produto['produto']) ?>" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="valor">Valor:</label>
+                            <input type="text" class="form-control" id="valor" name="valor" 
+                                   value="R$ <?= number_format($this->view->produto['valor'], 2, ',', '.') ?>" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="quantidade">Quantidade:</label>
+                            <input type="number" class="form-control" id="quantidade" name="quantidade" 
+                                   value="<?= $this->view->produto['quantidade'] ?>" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="categoria">Categoria:</label>
+                            <select class="form-control" id="categoria" name="categoria" required>
+                                <option value="eletronico" <?= $this->view->produto['categoria'] == 'eletronico' ? 'selected' : '' ?>>Eletrônicos</option>
+                                <option value="alimentos" <?= $this->view->produto['categoria'] == 'alimentos' ? 'selected' : '' ?>>Alimentos</option>
+                                <option value="bebidas" <?= $this->view->produto['categoria'] == 'bebidas' ? 'selected' : '' ?>>Bebidas</option>
+                                <option value="roupas" <?= $this->view->produto['categoria'] == 'roupas' ? 'selected' : '' ?>>Roupas</option>
+                                <option value="outros" <?= $this->view->produto['categoria'] == 'outros' ? 'selected' : '' ?>>Outros</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="descricao">Descrição:</label>
+                    <textarea class="form-control" id="descricao" name="descricao" rows="4"><?= htmlspecialchars($this->view->produto['descricao']) ?></textarea>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-success btn-block">
+                            <i class="fas fa-save"></i> Salvar Alterações
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="/dashboard" class="btn btn-secondary btn-block">
+                            <i class="fas fa-arrow-left"></i> Cancelar
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Máscara para o campo valor
+document.getElementById('valor').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value) {
+        value = (parseInt(value) / 100).toFixed(2);
+        value = value.replace('.', ',');
+        value = 'R$ ' + value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+        e.target.value = value;
+    }
+});
+</script>

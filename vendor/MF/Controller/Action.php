@@ -10,11 +10,23 @@ abstract class Action {
 		$this->view = new \stdClass();
 	}
 
+	protected function initSession() {
+		if (session_status() == PHP_SESSION_NONE) {
+			session_start();
+		}
+	}
+
 	protected function render($view, $layout = 'layout') {
 		$this->view->page = $view;
 
-		if(file_exists("../App/Views/".$layout.".phtml")) {
-			require_once "../App/Views/".$layout.".phtml";
+		// CAMINHO ABSOLUTO CORRETO
+		$basePath = dirname(dirname(dirname(__DIR__))); // C:\xampp\htdocs\controle-estoque
+		
+		// Verificar se o layout existe
+		$layoutPath = $basePath . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $layout . '.phtml';
+		
+		if(file_exists($layoutPath)) {
+			require_once $layoutPath;
 		} else {
 			$this->content();
 		}
@@ -27,8 +39,26 @@ abstract class Action {
 
 		$classAtual = strtolower(str_replace('Controller', '', $classAtual));
 
-		require_once "../App/Views/".$classAtual."/".$this->view->page.".phtml";
+		// CAMINHO ABSOLUTO CORRETO
+		$basePath = dirname(dirname(dirname(__DIR__))); // C:\xampp\htdocs\controle-estoque
+		
+		// Mapeamento de controllers para pastas
+		$folderMap = [
+			'index' => 'index',
+			'app' => 'app',
+			'auth' => 'index'
+		];
+		
+		$folder = isset($folderMap[$classAtual]) ? $folderMap[$classAtual] : $classAtual;
+		
+		// Montar o caminho completo da view
+		$viewPath = $basePath . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . $this->view->page . '.phtml';
+		
+		if (file_exists($viewPath)) {
+			require_once $viewPath;
+		} else {
+			echo "View não encontrada: " . $viewPath;
+		}
 	}
 }
-
 ?>

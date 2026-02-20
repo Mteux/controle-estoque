@@ -1,68 +1,204 @@
 <body>
-
     <div class="corpo">
         <div class="row">
-            <div class="col-md-2 " id="menu">
+            <div class="col-md-2" id="menu">
                 <div class="container">
                     <div class="text-center">
-                        <a href="/dashboard"><img src="/img/logo.png" class="img-fluid rounded" alt="logo.png" width="150"></a>
+                        <a href="/dashboard">
+                            <img src="/img/logo.png" class="img-fluid rounded" alt="logo.png" width="150">
+                        </a>
                     </div>
 
                     <div>
                         <ul class="list-group text-start">
-
-                            <li class="list-group-item list-group-item-action"><i class="fa-solid fa-box"></i><a href="/dashboard">Produtos</a></li>
-                            <li class="list-group-item list-group-item-action"> <i class="fa-solid fa-angles-down"></i><a href="#">Adicionar</a></li>
-                            <li class="list-group-item list-group-item-action"><i class="fa-regular fa-comment"></i><a href="/feedback">FeedBack</a></li>
-                            <li class="list-group-item list-group-item-action"><i class="fa-solid fa-right-from-bracket"></i><a href="/sair">Sair</a></li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-solid fa-box"></i>
+                                <a href="/dashboard">Produtos</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-solid fa-angles-down"></i>
+                                <a href="/adicionar">Adicionar</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-regular fa-chart-bar"></i>
+                                <a href="/relatorios">Relatórios</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-regular fa-comment"></i>
+                                <a href="/feedback">FeedBack</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <a href="/sair">Sair</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
-
-
             </div>
 
             <div class="col-md-10" id="form-cad">
-                <div class="container mt-5 pb-5 ">
-                    <h3 class="mb-4">Adicione seus produtos</h3>
-                    <form method="post" action="/addProduto" class="form-group">
-                        <div class="mb-3">
-                            <label for="" class="form-label">Produto: </label>
-                            <input class="form-control" type="text" name="produto" placeholder="Produto">
+                <div class="container mt-5 pb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">
+                                <i class="fas fa-plus-circle"></i> Adicionar Novo Produto
+                            </h3>
                         </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">Valor: </label>
-                            <input class="form-control" type="text" name="valor" placeholder="Valor">
-                        </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">Quantidade: </label>
-                            <input class="form-control" type="number" name="quantidade" placeholder="Quantidade">
-                        </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">Categoria: </label>
-                            <select class="form-control" name="categoria" aria-label="Default select example">
-                                <option selected>Selecione a categoria</option>
-                                <option value="eletronico">Eletrônicos</option>
-                                <option value="alimentos">Alimentos</option>
-                                <option value="bebidas">Bebidas</option>
-                            </select>
-                        </div>
-                        <div>
-                            <div class="mb-3">
-                                <label for="" class="form-label">Descrição: </label>
-                                <textarea class="form-control" type="text" name="descricao"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-outline-dark btn-block">Adicionar </button>
-                        </div>
+                        <div class="card-body">
+                            <form method="post" action="/addProduto" class="form-group" id="form-produto">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="produto" class="form-label">
+                                                <i class="fas fa-box text-primary"></i> Produto:
+                                            </label>
+                                            <input class="form-control" type="text" name="produto" 
+                                                   id="produto" placeholder="Digite o nome do produto" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="valor" class="form-label">
+                                                <i class="fas fa-dollar-sign text-success"></i> Valor:
+                                            </label>
+                                                <input class="form-control" type="text" name="valor" 
+                                                   id="valor" placeholder="R$ 0,00" required>
+                                        </div>
+                                    </div>
+                                </div>
 
-                    </form>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="quantidade" class="form-label">
+                                                <i class="fas fa-sort-numeric-up text-warning"></i> Quantidade:
+                                            </label>
+                                            <input class="form-control" type="number" name="quantidade" 
+                                                   id="quantidade" placeholder="Quantidade em estoque" required min="0">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="categoria" class="form-label">
+                                                <i class="fas fa-tags text-info"></i> Categoria:
+                                            </label>
+                                            <select class="form-control" name="categoria" id="categoria" required>
+                                                <option value="">Selecione a categoria</option>
+                                                <option value="eletronico">📱 Eletrônicos</option>
+                                                <option value="alimentos">🍎 Alimentos</option>
+                                                <option value="bebidas">🥤 Bebidas</option>
+                                                <option value="roupas">👕 Roupas</option>
+                                                <option value="calcados">👟 Calçados</option>
+                                                <option value="moveis">🪑 Móveis</option>
+                                                <option value="livros">📚 Livros</option>
+                                                <option value="outros">📦 Outros</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="descricao" class="form-label">
+                                        <i class="fas fa-align-left text-secondary"></i> Descrição:
+                                    </label>
+                                    <textarea class="form-control" type="text" name="descricao" 
+                                              id="descricao" rows="4" placeholder="Descrição detalhada do produto"></textarea>
+                                    <small class="text-muted">Descreva as características importantes do produto</small>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-success btn-block" id="btn-submit">
+                                            <i class="fas fa-save"></i> Adicionar Produto
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="/dashboard" class="btn btn-outline-secondary btn-block">
+                                            <i class="fas fa-arrow-left"></i> Cancelar
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Dicas de preenchimento -->
+                    <div class="card mt-4">
+                        <div class="card-header bg-info text-white">
+                            <i class="fas fa-lightbulb"></i> Dicas de Preenchimento
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success"></i> 
+                                    <strong>Produto:</strong> Use nomes claros e descritivos
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success"></i> 
+                                    <strong>Valor:</strong> Inclua todas as taxas e impostos
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success"></i> 
+                                    <strong>Quantidade:</strong> Mantenha sempre atualizado
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success"></i> 
+                                    <strong>Categoria:</strong> Escolha a categoria mais adequada
+                                </li>
+                                <li>
+                                    <i class="fas fa-check-circle text-success"></i> 
+                                    <strong>Descrição:</strong> Inclua informações relevantes como cor, tamanho, marca, etc.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-
-
-
             </div>
         </div>
     </div>
 
+    <script>
+    // Validação do formulário
+    document.getElementById('form-produto').addEventListener('submit', function(e) {
+        const produto = document.getElementById('produto').value.trim();
+        const valor = document.getElementById('valor').value.trim();
+        const quantidade = document.getElementById('quantidade').value;
+        
+        if (!produto) {
+            e.preventDefault();
+            stockManager.showNotification('Por favor, preencha o nome do produto', 'error');
+            return;
+        }
+        
+        if (!valor) {
+            e.preventDefault();
+            stockManager.showNotification('Por favor, preencha o valor do produto', 'error');
+            return;
+        }
+        
+        if (!quantidade || quantidade < 0) {
+            e.preventDefault();
+            stockManager.showNotification('Por favor, preencha uma quantidade válida', 'error');
+            return;
+        }
+        
+        stockManager.showNotification('Adicionando produto...', 'info');
+    });
+    
+    // Formatação automática do valor
+    document.getElementById('valor').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value) {
+            value = (parseInt(value) / 100).toFixed(2);
+            value = value.replace('.', ',');
+            value = 'R$ ' + value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+            e.target.value = value;
+        }
+    });
 
+    
+    </script>
+    
+
+    
 </body>

@@ -1,58 +1,171 @@
 <body>
-
     <div class="corpo">
         <div class="row">
-            <div class="col-md-2 " id="menu">
+            <div class="col-md-2" id="menu">
                 <div class="container">
                     <div class="text-center">
-                        <a href="/dashboard"><img src="/img/logo.png" class="img-fluid rounded" alt="logo.png" width="150"></a>
+                        <a href="/dashboard">
+                            <img src="/img/logo.png" class="img-fluid rounded" alt="logo.png" width="150">
+                        </a>
                     </div>
 
                     <div>
                         <ul class="list-group text-start">
-
-                            <li class="list-group-item list-group-item-action"><i class="fa-solid fa-box"></i><a href="/dashboard">Produtos</a></li>
-                            <li class="list-group-item list-group-item-action"> <i class="fa-solid fa-angles-down"></i><a href="/adicionar">Adicionar</a></li>
-                            <li class="list-group-item list-group-item-action"><i class="fa-regular fa-comment"></i><a href="#">FeedBack</a></li>
-                            <li class="list-group-item list-group-item-action"><i class="fa-solid fa-right-from-bracket"></i><a href="/sair">Sair</a></li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-solid fa-box"></i>
+                                <a href="/dashboard">Produtos</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-solid fa-angles-down"></i>
+                                <a href="/adicionar">Adicionar</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-regular fa-chart-bar"></i>
+                                <a href="/relatorios">Relatórios</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-regular fa-comment"></i>
+                                <a href="/feedback">FeedBack</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <a href="/sair">Sair</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
-
-
             </div>
 
             <div class="col-md-10" id="form-cad">
-                <div class="container mt-5 pb-5 ">
-
-                    <h2>Envie um feedback para o nosso time!</h2>
-                    <p>Sua opnião vale muito, por favor dê sua sugestão. </p>
-
-                    <form action="/enviar" method="post" class="form-group">
-                        <div>
-                            <label for="" class="form-label">Titulo </label>
-                            <input type="text" class="form-control" name="titulo" id="">
+                <div class="container mt-5 pb-5">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h2 class="mb-0">
+                                <i class="fas fa-comment-dots"></i> Envie seu Feedback
+                            </h2>
                         </div>
-                        <div>
-                            <label for="" class="form-label">Digite sua sugestão:</label>
-                            <textarea name="sugestao" id="" class="form-control"></textarea>
+                        <div class="card-body">
+                            <p class="lead">
+                                <i class="fas fa-heart text-danger"></i> 
+                                Sua opinião vale muito! Por favor, compartilhe suas sugestões conosco.
+                            </p>
+
+                            <form action="/enviar" method="post" class="form-group" id="form-feedback">
+                                <div class="form-group">
+                                    <label for="titulo" class="form-label">
+                                        <i class="fas fa-heading"></i> Título
+                                    </label>
+                                    <input type="text" class="form-control" name="titulo" id="titulo" 
+                                           placeholder="Ex: Sugestão de nova funcionalidade" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="categoria-feedback" class="form-label">
+                                        <i class="fas fa-tag"></i> Categoria
+                                    </label>
+                                    <select class="form-control" name="categoria" id="categoria-feedback">
+                                        <option value="sugestao">💡 Sugestão</option>
+                                        <option value="bug">🐛 Reportar Bug</option>
+                                        <option value="elogio">⭐ Elogio</option>
+                                        <option value="critica">📝 Crítica Construtiva</option>
+                                        <option value="duvida">❓ Dúvida</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="sugestao" class="form-label">
+                                        <i class="fas fa-edit"></i> Digite sua mensagem:
+                                    </label>
+                                    <textarea name="sugestao" id="sugestao" class="form-control" 
+                                              rows="6" placeholder="Descreva detalhadamente sua sugestão, dúvida ou problema..." required></textarea>
+                                    <small class="text-muted">Seja o mais detalhado possível para podermos ajudar melhor</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="anexo" class="form-label">
+                                        <i class="fas fa-paperclip"></i> Anexar arquivo (opcional)
+                                    </label>
+                                    <input type="file" class="form-control-file" id="anexo" name="anexo">
+                                    <small class="text-muted">Você pode anexar imagens ou documentos relevantes</small>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary btn-block" id="btn-enviar">
+                                            <i class="fas fa-paper-plane"></i> Enviar Feedback
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="reset" class="btn btn-outline-secondary btn-block">
+                                            <i class="fas fa-eraser"></i> Limpar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <?php if (isset($_GET['sucesso']) && $_GET['sucesso'] == '1'): ?>
+                                <div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+                                    <i class="fas fa-check-circle"></i>
+                                    <strong>Sucesso!</strong> E-mail enviado com sucesso! Agradecemos seu feedback.
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                        <button type="submit" class="mt-2 btn btn-outline-secondary">Enviar</button>
+                    </div>
 
-                        <?php if (isset($_GET['sucesso']) && $_GET['sucesso'] == '1'): ?>
-
-                            <script>
-                                alert("E-mail enviado com sucesso!")
-                            </script>
-
-                        <?php endif; ?>
-
-                    </form>
-
+                    <!-- Card de agradecimento -->
+                    <div class="card mt-4 bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-smile-wink fa-3x text-primary mb-3"></i>
+                            <h4>Obrigado por nos ajudar a melhorar!</h4>
+                            <p class="text-muted">Todos os feedbacks são lidos e considerados pela nossa equipe.</p>
+                            <div class="row mt-4">
+                                <div class="col-4">
+                                    <i class="fas fa-bolt text-warning"></i>
+                                    <h6>Rápido</h6>
+                                </div>
+                                <div class="col-4">
+                                    <i class="fas fa-lock text-success"></i>
+                                    <h6>Seguro</h6>
+                                </div>
+                                <div class="col-4">
+                                    <i class="fas fa-users text-info"></i>
+                                    <h6>Anônimo</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-
+    <script>
+    document.getElementById('form-feedback').addEventListener('submit', function(e) {
+        const titulo = document.getElementById('titulo').value.trim();
+        const sugestao = document.getElementById('sugestao').value.trim();
+        
+        if (!titulo) {
+            e.preventDefault();
+            stockManager.showNotification('Por favor, preencha o título', 'error');
+            return;
+        }
+        
+        if (!sugestao) {
+            e.preventDefault();
+            stockManager.showNotification('Por favor, preencha sua mensagem', 'error');
+            return;
+        }
+        
+        if (sugestao.length < 10) {
+            e.preventDefault();
+            stockManager.showNotification('Sua mensagem deve ter pelo menos 10 caracteres', 'warning');
+            return;
+        }
+        
+        stockManager.showNotification('Enviando feedback...', 'info');
+    });
+    </script>
 </body>
