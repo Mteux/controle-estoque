@@ -103,6 +103,11 @@ switch ($url) {
         $controller = new App\Controllers\AppController();
         $controller->atualizarProduto();
         break;
+
+    case 'relatorios':
+        $controller = new App\Controllers\AppController();
+        $controller->relatorios();
+        break;
         
     default:
         header("HTTP/1.0 404 Not Found");

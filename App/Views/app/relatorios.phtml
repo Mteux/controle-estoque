@@ -1,0 +1,349 @@
+<body>
+    <div class="corpo">
+        <div class="row">
+            <!-- Menu Lateral (igual ao dashboard) -->
+            <div class="col-md-2" id="menu">
+                <nav class="container">
+                    <div class="text-center">
+                        <a href="/dashboard">
+                            <img src="/img/logo.png" class="img-fluid rounded" alt="logo.png" width="150">
+                        </a>
+                    </div>
+
+                    <div id="menu">
+                        <ul class="list-group text-start">
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-solid fa-box"></i>
+                                <a href="/dashboard">Produtos</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-solid fa-angles-down"></i>
+                                <a href="/adicionar">Adicionar</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-regular fa-chart-bar"></i>
+                                <a href="/relatorios">Relatórios</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-regular fa-comment"></i>
+                                <a href="/feedback">FeedBack</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <a href="/sair">Sair</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Área de Conteúdo -->
+            <div class="col-md-10">
+                <div class="container mt-5">
+                    <!-- Cabeçalho padrão -->
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="titulo">
+                                <i class="fas fa-chart-bar text-primary"></i> 
+                                Relatórios do Estoque
+                            </h1>
+                            <p class="lead">
+                                <i class="fas fa-info-circle text-info"></i> 
+                                Análise completa do seu estoque
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Cards de Estatísticas no estilo do sistema -->
+                    <div class="row mt-4">
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <i class="fas fa-boxes"></i>
+                                <div class="stats-number"><?= $this->view->stats['total_produtos'] ?></div>
+                                <div class="stats-label">Total de Produtos</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <i class="fas fa-sort-amount-up"></i>
+                                <div class="stats-number"><?= $this->view->stats['total_quantidade'] ?></div>
+                                <div class="stats-label">Unidades em Estoque</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <i class="fas fa-dollar-sign"></i>
+                                <div class="stats-number">R$ <?= number_format($this->view->stats['valor_total'], 2, ',', '.') ?></div>
+                                <div class="stats-label">Valor Total</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <div class="stats-number <?= $this->view->stats['estoque_baixo'] > 0 ? 'text-danger' : '' ?>">
+                                    <?= $this->view->stats['estoque_baixo'] ?>
+                                </div>
+                                <div class="stats-label">Estoque Baixo</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cards de Informações Detalhadas -->
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-tags"></i> Produtos por Categoria
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Categoria</th>
+                                                <th>Quantidade</th>
+                                                <th>% do Estoque</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($this->view->stats['categorias'] as $categoria => $quantidade): ?>
+                                            <tr>
+                                                <td><span class="badge badge-info p-2"><?= ucfirst($categoria) ?></span></td>
+                                                <td><strong><?= $quantidade ?></strong></td>
+                                                <td>
+                                                    <?= round(($quantidade / $this->view->stats['total_produtos']) * 100, 1) ?>%
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-line"></i> Análise de Valores
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-hover">
+                                        <tr>
+                                            <td><i class="fas fa-arrow-up text-success"></i> <strong>Produto mais caro:</strong></td>
+                                            <td class="text-right"><strong class="text-success">R$ <?= number_format($this->view->stats['produto_mais_caro'], 2, ',', '.') ?></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-arrow-down text-danger"></i> <strong>Produto mais barato:</strong></td>
+                                            <td class="text-right"><strong class="text-danger">R$ <?= number_format($this->view->stats['produto_mais_barato'], 2, ',', '.') ?></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-calculator text-info"></i> <strong>Valor médio por unidade:</strong></td>
+                                            <td class="text-right"><strong class="text-info">R$ <?= 
+                                                $this->view->stats['total_quantidade'] > 0 ? 
+                                                number_format($this->view->stats['valor_total'] / $this->view->stats['total_quantidade'], 2, ',', '.') : 
+                                                '0,00' 
+                                            ?></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-balance-scale text-primary"></i> <strong>Valor médio por produto:</strong></td>
+                                            <td class="text-right"><strong class="text-primary">R$ <?= 
+                                                $this->view->stats['total_produtos'] > 0 ? 
+                                                number_format($this->view->stats['valor_total'] / $this->view->stats['total_produtos'], 2, ',', '.') : 
+                                                '0,00' 
+                                            ?></strong></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Produtos com Estoque Baixo -->
+                    <?php 
+                    $produtosEstoqueBaixo = array_filter($this->view->produtos, function($p) {
+                        return $p['quantidade'] < 10;
+                    });
+                    ?>
+                    
+                    <?php if (!empty($produtosEstoqueBaixo)): ?>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card border-danger">
+                                <div class="card-header bg-danger text-white">
+                                    <i class="fas fa-exclamation-triangle"></i> 
+                                    Produtos com Estoque Baixo (< 10 unidades)
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Produto</th>
+                                                    <th>Categoria</th>
+                                                    <th>Quantidade</th>
+                                                    <th>Valor Unitário</th>
+                                                    <th>Ação</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($this->view->produtos as $p): ?>
+                                                    <?php if ($p['quantidade'] < 10): ?>
+                                                    <tr>
+                                                        <td class="font-weight-bold"><?= htmlspecialchars($p['produto']) ?></td>
+                                                        <td><span class="badge badge-info"><?= $p['categoria'] ?></span></td>
+                                                        <td>
+                                                            <span class="badge badge-danger badge-pill p-2">
+                                                                <?= $p['quantidade'] ?> unidades
+                                                            </span>
+                                                        </td>
+                                                        <td>R$ <?= number_format($p['valor'], 2, ',', '.') ?></td>
+                                                        <td>
+                                                            <a href="/editar-produto?id=<?= $p['id'] ?>" class="btn btn-sm btn-primary">
+                                                                <i class="fas fa-edit"></i> Reabastecer
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
+                    <!-- Tabela Resumo de Todos os Produtos -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-list"></i> Lista Completa de Produtos
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Produto</th>
+                                                    <th>Categoria</th>
+                                                    <th>Quantidade</th>
+                                                    <th>Valor Unit.</th>
+                                                    <th>Valor Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($this->view->produtos as $p): ?>
+                                                <tr>
+                                                    <td><?= htmlspecialchars($p['produto']) ?></td>
+                                                    <td><span class="badge badge-info"><?= $p['categoria'] ?></span></td>
+                                                    <td><?= $p['quantidade'] ?></td>
+                                                    <td>R$ <?= number_format($p['valor'], 2, ',', '.') ?></td>
+                                                    <td><strong>R$ <?= number_format($p['valor'] * $p['quantidade'], 2, ',', '.') ?></strong></td>
+                                                </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="font-weight-bold">
+                                                    <td colspan="4" class="text-right">TOTAL GERAL:</td>
+                                                    <td>R$ <?= number_format($this->view->stats['valor_total'], 2, ',', '.') ?></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="row mt-4 mb-5">
+                        <div class="col-12 text-center">
+                            <a href="/exportar-relatorio" class="btn btn-success btn-lg">
+                                <i class="fas fa-download"></i> Exportar Relatório
+                            </a>
+                            <a href="/dashboard" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-arrow-left"></i> Voltar ao Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    /* Estilos adicionais específicos para relatórios */
+    .stats-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: var(--card-shadow);
+        transition: all var(--transition-speed);
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--hover-shadow);
+    }
+
+    .stats-card i {
+        font-size: 2.5rem;
+        color: var(--secondary-color);
+        margin-bottom: 10px;
+    }
+
+    .stats-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        line-height: 1.2;
+    }
+
+    .stats-label {
+        color: #6c757d;
+        font-weight: 500;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--dark-bg));
+        color: white;
+        font-weight: 500;
+        border-bottom: none;
+    }
+
+    .card-header i {
+        margin-right: 8px;
+    }
+
+    .table thead th {
+        background: var(--light-bg);
+        color: var(--primary-color);
+        font-weight: 600;
+        border: none;
+    }
+
+    .badge-info {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+
+    .badge-danger {
+        background-color: var(--danger-color);
+        color: white;
+    }
+
+    .text-success { color: var(--success-color) !important; }
+    .text-danger { color: var(--danger-color) !important; }
+    .text-info { color: var(--secondary-color) !important; }
+    .text-primary { color: var(--primary-color) !important; }
+    </style>
+</body>

@@ -107,6 +107,34 @@ class Produto extends Model
         
         return $stmt->execute();
     }
+    /**
+     * Conta produtos por categoria
+     */
+    public function countPorCategoria()
+    {
+        $query = "SELECT categoria, COUNT(*) as total, SUM(quantidade) as quant_total 
+                FROM produtos 
+                WHERE id_usuario = :id_usuario 
+                GROUP BY categoria";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id_usuario', $this->__get('id_usuario'), \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 
+    /**
+     * Produtos com estoque baixo
+     */
+    public function getEstoqueBaixo($limite = 10)
+    {
+        $query = "SELECT * FROM produtos 
+                WHERE id_usuario = :id_usuario AND quantidade < :limite 
+                ORDER BY quantidade ASC";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id_usuario', $this->__get('id_usuario'), \PDO::PARAM_INT);
+        $stmt->bindValue(':limite', $limite, \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 
 }

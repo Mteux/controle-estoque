@@ -272,4 +272,57 @@ class AppController extends Action
             header('Location: /editar-produto?id=' . $_POST['id'] . '&erro=1');
         }
     }
+
+    /**
+     * Exibe a página de relatórios
+     */
+    public function relatorios()
+    {
+        $this->initSession();
+
+        if (empty($_SESSION['id'])) {
+            header('Location: /?login=erro');
+            return;
+        }
+        
+        $id_usuario = $_SESSION['id'];
+        $produto = Container::getModel('Produto');
+        $produto->__set('id_usuario', $id_usuario);
+        
+        // Busca todos os produtos
+        $this->view->produtos = $produto->getAll();
+        
+        // Calcula estatísticas
+        $totalProdutos = count($this->view->produtos);
+        $valorTotal = 0;
+        $totalQuantidade = 0;
+        $estoqueBaixo = 0;
+        $categorias = [];
+        $valores = [];
+        
+        foreach ($this->view->produtos as $p) {
+            $valorTotal += $p['valor'] * $p['quantidade'];
+            $totalQuantidade += $p['quantidade'];
+            $valores[] = $p['valor'];
+            
+            if ($p['quantidade'] < 10) {
+                $estoqueBaixo++;
+            }
+            
+            $cat = $p['categoria'];
+            $categorias[$cat] = isset($categorias[$cat]) ? $categorias[$cat] + 1 : 1;
+        }
+        
+        $this->view->stats = [
+            'total_produtos' => $totalProdutos,
+            'total_quantidade' => $totalQuantidade,
+            'valor_total' => $valorTotal,
+            'estoque_baixo' => $estoqueBaixo,
+            'categorias' => $categorias,
+            'produto_mais_caro' => !empty($valores) ? max($valores) : 0,
+            'produto_mais_barato' => !empty($valores) ? min($valores) : 0
+        ];
+        
+        $this->render('relatorios');
+    }
 }

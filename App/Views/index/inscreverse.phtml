@@ -3,123 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - Sistema de Estoque</title>
+    <title>Cadastro - Controle de Estoque</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+    <link rel="stylesheet" href="/css/style.css">
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-bg) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
         }
-        .card {
+        
+        .register-container {
+            width: 100%;
+            max-width: 550px;
+            padding: 20px;
+        }
+        
+        .register-card {
+            background: white;
             border-radius: 20px;
+            box-shadow: var(--card-shadow);
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.6s ease-out;
         }
-        .card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        
+        .register-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-bg));
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            transition: transform 0.3s;
+        
+        .register-header i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.2);
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+            display: inline-block;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        
+        .register-header h3 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.8rem;
         }
+        
+        .register-header p {
+            margin: 10px 0 0;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .register-body {
+            padding: 40px 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-group label i {
+            margin-right: 8px;
+            color: var(--secondary-color);
+        }
+        
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            height: auto;
+        }
+        
         .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .btn-register {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-bg));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(44, 62, 80, 0.3);
+        }
+        
+        .btn-register i {
+            margin-right: 8px;
+        }
+        
+        .btn-back {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .btn-back:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(44, 62, 80, 0.3);
+            text-decoration: none;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: var(--danger-color);
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .alert-danger i {
+            margin-right: 8px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: var(--success-color);
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .alert-success i {
+            margin-right: 8px;
+        }
+        
+        .password-requirements {
+            background: var(--light-bg);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-top: 5px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .password-requirements i {
+            margin-right: 5px;
+            color: var(--secondary-color);
+        }
+        
+        .terms {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .terms a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        
+        .terms a:hover {
+            text-decoration: underline;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center align-items-center" style="min-height: 100vh;">
-            <div class="col-md-8">
-                <div class="card shadow-lg border-0">
-                    <div class="card-header text-white text-center py-4">
-                        <i class="fas fa-user-plus fa-3x mb-3"></i>
-                        <h3 class="mb-0 font-weight-bold">Criar Nova Conta</h3>
-                        <p class="mb-0 mt-2">Preencha os dados abaixo para se cadastrar</p>
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                <i class="fas fa-user-plus"></i>
+                <h3>Criar Nova Conta</h3>
+                <p>Preencha os dados abaixo para se cadastrar</p>
+            </div>
+            
+            <div class="register-body">
+                <?php if (isset($this->view->erroCadastro) && $this->view->erroCadastro) { ?>
+                    <div class="alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Erro ao realizar o cadastro. Verifique os dados e tente novamente.
                     </div>
-
-                    <div class="card-body p-5">
-                        <form action="/registrar" method="post" class="form" id="form-registro">
-                            <!-- Nome Completo -->
-                            <div class="form-group mb-4">
-                                <label for="nome" class="font-weight-bold text-primary">
-                                    <i class="fas fa-user mr-2"></i>Nome Completo:
-                                </label>
-                                <input type="text" 
-                                       value="<?php echo isset($this->view->usuario['nome']) ? htmlspecialchars($this->view->usuario['nome']) : ''; ?>" 
-                                       name="nome" 
-                                       class="form-control form-control-lg" 
-                                       id="nome" 
-                                       placeholder="Digite seu nome completo" 
-                                       required>
-                            </div>
-
-                            <!-- E-mail -->
-                            <div class="form-group mb-4">
-                                <label for="email" class="font-weight-bold text-primary">
-                                    <i class="fas fa-envelope mr-2"></i>E-mail:
-                                </label>
-                                <input type="email" 
-                                       value="<?php echo isset($this->view->usuario['email']) ? htmlspecialchars($this->view->usuario['email']) : ''; ?>" 
-                                       name="email" 
-                                       class="form-control form-control-lg" 
-                                       id="email" 
-                                       placeholder="Digite seu e-mail" 
-                                       required>
-                            </div>
-
-                            <!-- Senha -->
-                            <div class="form-group mb-4">
-                                <label for="senha" class="font-weight-bold text-primary">
-                                    <i class="fas fa-lock mr-2"></i>Senha:
-                                </label>
-                                <input type="password" 
-                                       name="senha" 
-                                       class="form-control form-control-lg" 
-                                       id="senha" 
-                                       placeholder="Digite sua senha" 
-                                       required 
-                                       minlength="6">
-                                <small class="text-muted">Mínimo de 6 caracteres</small>
-                            </div>
-
-                            <!-- Mensagem de Erro -->
-                            <?php if (isset($this->view->erroCadastro) && $this->view->erroCadastro) { ?>
-                                <div class="alert alert-danger">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    Erro ao cadastrar. Verifique os dados e tente novamente.
-                                </div>
-                            <?php } ?>
-
-                            <!-- Botões -->
-                            <div class="row mt-4">
-                                <div class="col-md-6 mb-3 mb-md-0">
-                                    <button type="submit" class="btn btn-primary btn-lg btn-block">
-                                        <i class="fas fa-user-plus mr-2"></i>Cadastrar
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <a href="/" class="btn btn-outline-secondary btn-lg btn-block">
-                                        <i class="fas fa-arrow-left mr-2"></i>Voltar
-                                    </a>
-                                </div>
-                            </div>
-                        </form>
+                <?php } ?>
+                
+                <?php if (isset($_GET['sucesso']) && $_GET['sucesso'] == '1') { ?>
+                    <div class="alert-success">
+                        <i class="fas fa-check-circle"></i>
+                        Cadastro realizado com sucesso! Faça o login.
                     </div>
-                </div>
+                <?php } ?>
+                
+                <form action="/registrar" method="post">
+                    <div class="form-group">
+                        <label for="nome">
+                            <i class="fas fa-user"></i> Nome Completo
+                        </label>
+                        <input type="text" class="form-control" id="nome" name="nome" 
+                               value="<?= isset($this->view->usuario['nome']) ? $this->view->usuario['nome'] : '' ?>" 
+                               placeholder="Digite seu nome completo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">
+                            <i class="fas fa-envelope"></i> E-mail
+                        </label>
+                        <input type="email" class="form-control" id="email" name="email" 
+                               value="<?= isset($this->view->usuario['email']) ? $this->view->usuario['email'] : '' ?>" 
+                               placeholder="Digite seu e-mail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="senha">
+                            <i class="fas fa-lock"></i> Senha
+                        </label>
+                        <input type="password" class="form-control" id="senha" name="senha" 
+                               placeholder="Digite sua senha" required minlength="6">
+                        <div class="password-requirements">
+                            <i class="fas fa-info-circle"></i>
+                            Mínimo de 6 caracteres
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-register">
+                        <i class="fas fa-user-plus"></i> Cadastrar
+                    </button>
+                    
+                    <a href="/" class="btn-back">
+                        <i class="fas fa-arrow-left"></i> Voltar para Login
+                    </a>
+                    
+                    <div class="terms">
+                        Ao se cadastrar, você concorda com nossos 
+                        <a href="/termos">Termos de Uso</a> e 
+                        <a href="/privacidade">Política de Privacidade</a>.
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </body>
 </html>
