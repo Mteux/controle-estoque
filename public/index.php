@@ -80,7 +80,7 @@ switch ($url) {
         
     case 'exportar':
         $controller = new App\Controllers\AppController();
-        $controller->exportar();
+        $controller->exportarRelatorioExcel();
         break;
         
     // CORREÇÃO AQUI - ROTA DELETAR PRODUTO
@@ -108,6 +108,21 @@ switch ($url) {
         $controller = new App\Controllers\AppController();
         $controller->relatorios();
         break;
+
+        case 'exportar-relatorio-csv':
+            $controller = new App\Controllers\AppController();
+            $controller->exportarRelatorioCSV();
+            break;
+            
+        case 'exportar-relatorio-excel':
+            $controller = new App\Controllers\AppController();
+            $controller->exportarRelatorioExcel();
+            break;
+            
+        case 'exportar-relatorio-pdf':
+            $controller = new App\Controllers\AppController();
+            $controller->exportarRelatorioPDF();
+            break;
         
     default:
         header("HTTP/1.0 404 Not Found");

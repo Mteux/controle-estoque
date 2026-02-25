@@ -119,44 +119,67 @@ class AppController extends Action
         }
     }
 
-    public function exportar()
+    public function exportarRelatorioExcel()
     {
         $this->initSession();
 
-        if (!empty($_SESSION['id']) && !empty($_SESSION['nome'])) {
-            $produto = Container::getModel('Produto');
-            $produto->__set('id_usuario', $_SESSION['id']);
-            $produtos = $produto->getAll();
-
-            header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="produtos.xls"');
-            header('Cache-Control: max-age=0');
-
-            echo "<table border='1'>";
-            echo "<tr>
-                    <th>Produto</th>
-                    <th>Valor</th>
-                    <th>Quantidade</th>
-                    <th>Categoria</th>
-                    <th>Descrição</th>
-                </tr>";
-
-            foreach ($produtos as $produto) {
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($produto['produto']) . "</td>";
-                echo "<td>R$ " . number_format($produto['valor'], 2, ',', '.') . "</td>";
-                echo "<td>" . $produto['quantidade'] . "</td>";
-                echo "<td>" . htmlspecialchars($produto['categoria']) . "</td>";
-                echo "<td>" . htmlspecialchars($produto['descricao']) . "</td>";
-                echo "</tr>";
-            }
-
-            echo "</table>";
-            exit;
-        } else {
+        if (empty($_SESSION['id'])) {
             header('Location: /?login=erro');
-            exit();
+            return;
         }
+        
+        $id_usuario = $_SESSION['id'];
+        $produto = Container::getModel('Produto');
+        $produto->__set('id_usuario', $id_usuario);
+        
+        $produtos = $produto->getAll();
+        
+        $filename = 'relatorio_estoque_' . date('Y-m-d') . '.xls';
+        
+        header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        
+        // BOM para UTF-8
+        echo "\xEF\xBB\xBF";
+        
+        echo '<html>';
+        echo '<head><meta charset="UTF-8"></head>';
+        echo '<body>';
+        echo '<table border="1">';
+        echo '<tr><th colspan="6" style="font-size:16px;">RELATÓRIO DE ESTOQUE</th></tr>';
+        echo '<tr><td colspan="6">Data: ' . date('d/m/Y H:i:s') . '</td></tr>';
+        echo '<tr><th>Produto</th><th>Categoria</th><th>Quantidade</th><th>Valor Unit.</th><th>Valor Total</th><th>Status</th></tr>';
+        
+        $valorTotalGeral = 0;
+        $totalQuantidade = 0;
+        
+        foreach ($produtos as $p) {
+            $valorTotal = $p['valor'] * $p['quantidade'];
+            $valorTotalGeral += $valorTotal;
+            $totalQuantidade += $p['quantidade'];
+            $status = $p['quantidade'] < 10 ? 'ESTOQUE BAIXO' : 'OK';
+            
+            echo '<tr>';
+            echo '<td>' . htmlspecialchars($p['produto']) . '</td>';
+            echo '<td>' . $p['categoria'] . '</td>';
+            echo '<td align="center">' . $p['quantidade'] . '</td>';
+            echo '<td align="right">R$ ' . number_format($p['valor'], 2, ',', '.') . '</td>';
+            echo '<td align="right">R$ ' . number_format($valorTotal, 2, ',', '.') . '</td>';
+            echo '<td>' . $status . '</td>';
+            echo '</tr>';
+        }
+        
+        echo '<tr style="font-weight:bold; background-color:#ecf0f1;">';
+        echo '<td colspan="2">TOTAL GERAL:</td>';
+        echo '<td align="center">' . $totalQuantidade . '</td>';
+        echo '<td></td>';
+        echo '<td align="right">R$ ' . number_format($valorTotalGeral, 2, ',', '.') . '</td>';
+        echo '<td></td>';
+        echo '</tr>';
+        
+        echo '</table>';
+        echo '</body></html>';
+        exit;
     }
 
     
@@ -274,9 +297,63 @@ class AppController extends Action
     }
 
     /**
-     * Exibe a página de relatórios
+         * Exibe a página de relatórios
+         */
+        public function exportar()
+        {
+            $this->initSession();
+
+            if (empty($_SESSION['id'])) {
+                header('Location: /?login=erro');
+                return;
+            }
+            
+            $id_usuario = $_SESSION['id'];
+            $produto = Container::getModel('Produto');
+            $produto->__set('id_usuario', $id_usuario);
+            
+            // Busca todos os produtos
+            $produtos = $produto->getAll();
+            
+            // Nome do arquivo
+            $filename = 'produtos_' . date('Y-m-d') . '.xls';
+            
+            // Headers para download
+            header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Cache-Control: max-age=0');
+            
+            // ADICIONAR BOM PARA UTF-8 (ISSO RESOLVE O PROBLEMA)
+            echo "\xEF\xBB\xBF"; // BOM para UTF-8
+            
+            // Inicia a tabela HTML
+            echo '<table border="1">';
+            echo '<tr>
+                    <th>Produto</th>
+                    <th>Valor</th>
+                    <th>Quantidade</th>
+                    <th>Categoria</th>
+                    <th>Descrição</th>
+                </tr>';
+
+            foreach ($produtos as $produto) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($produto['produto']) . "</td>";
+                echo "<td>R$ " . number_format($produto['valor'], 2, ',', '.') . "</td>";
+                echo "<td>" . $produto['quantidade'] . "</td>";
+                echo "<td>" . htmlspecialchars($produto['categoria']) . "</td>";
+                echo "<td>" . htmlspecialchars($produto['descricao']) . "</td>";
+                echo "</tr>";
+            }
+
+            echo "</table>";
+            exit;
+        }
+
+    /**
+     * Exporta relatório em formato CSV
      */
-    public function relatorios()
+    public function exportarRelatorioCSV()
     {
         $this->initSession();
 
@@ -290,39 +367,205 @@ class AppController extends Action
         $produto->__set('id_usuario', $id_usuario);
         
         // Busca todos os produtos
-        $this->view->produtos = $produto->getAll();
+        $produtos = $produto->getAll();
         
         // Calcula estatísticas
-        $totalProdutos = count($this->view->produtos);
         $valorTotal = 0;
         $totalQuantidade = 0;
         $estoqueBaixo = 0;
-        $categorias = [];
-        $valores = [];
         
-        foreach ($this->view->produtos as $p) {
+        foreach ($produtos as $p) {
             $valorTotal += $p['valor'] * $p['quantidade'];
             $totalQuantidade += $p['quantidade'];
-            $valores[] = $p['valor'];
-            
             if ($p['quantidade'] < 10) {
                 $estoqueBaixo++;
             }
-            
-            $cat = $p['categoria'];
-            $categorias[$cat] = isset($categorias[$cat]) ? $categorias[$cat] + 1 : 1;
         }
         
-        $this->view->stats = [
-            'total_produtos' => $totalProdutos,
-            'total_quantidade' => $totalQuantidade,
-            'valor_total' => $valorTotal,
-            'estoque_baixo' => $estoqueBaixo,
-            'categorias' => $categorias,
-            'produto_mais_caro' => !empty($valores) ? max($valores) : 0,
-            'produto_mais_barato' => !empty($valores) ? min($valores) : 0
-        ];
+        // Nome do arquivo com data
+        $filename = 'relatorio_estoque_' . date('Y-m-d_H-i-s') . '.csv';
         
-        $this->render('relatorios');
+        // Headers para download
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        
+        // Cria o arquivo CSV
+        $output = fopen('php://output', 'w');
+        
+        // BOM para UTF-8 (resolve acentos no Excel)
+        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+        
+        // ===== CABEÇALHO DO RELATÓRIO =====
+        fputcsv($output, ['RELATÓRIO DE ESTOQUE', date('d/m/Y H:i:s')]);
+        fputcsv($output, []); // Linha em branco
+        
+        // Estatísticas Gerais
+        fputcsv($output, ['ESTATÍSTICAS GERAIS']);
+        fputcsv($output, ['Total de Produtos:', count($produtos)]);
+        fputcsv($output, ['Total de Unidades:', $totalQuantidade]);
+        fputcsv($output, ['Valor Total em Estoque:', 'R$ ' . number_format($valorTotal, 2, ',', '.')]);
+        fputcsv($output, ['Produtos com Estoque Baixo:', $estoqueBaixo]);
+        fputcsv($output, []); // Linha em branco
+        
+        // Cabeçalho da tabela de produtos
+        fputcsv($output, ['LISTA DE PRODUTOS']);
+        fputcsv($output, [
+            'ID',
+            'Produto',
+            'Categoria',
+            'Quantidade',
+            'Valor Unitário',
+            'Valor Total',
+            'Status'
+        ]);
+        
+        // Dados dos produtos
+        foreach ($produtos as $p) {
+            $valorUnitario = 'R$ ' . number_format($p['valor'], 2, ',', '.');
+            $valorTotalProduto = 'R$ ' . number_format($p['valor'] * $p['quantidade'], 2, ',', '.');
+            $status = $p['quantidade'] < 10 ? 'ESTOQUE BAIXO' : 'OK';
+            
+            fputcsv($output, [
+                $p['id'],
+                $p['produto'],
+                $p['categoria'],
+                $p['quantidade'],
+                $valorUnitario,
+                $valorTotalProduto,
+                $status
+            ]);
+        }
+        
+        // Linha de total
+        fputcsv($output, []); // Linha em branco
+        fputcsv($output, [
+            'TOTAL GERAL:',
+            '',
+            '',
+            $totalQuantidade,
+            '',
+            'R$ ' . number_format($valorTotal, 2, ',', '.'),
+            ''
+        ]);
+        
+        fclose($output);
+        exit;
+    }
+
+    /**
+     * Exporta relatório em formato PDF
+     */
+    public function exportarRelatorioPDF()
+    {
+        $this->initSession();
+
+        if (empty($_SESSION['id'])) {
+            header('Location: /?login=erro');
+            return;
+        }
+        
+        $id_usuario = $_SESSION['id'];
+        $produto = Container::getModel('Produto');
+        $produto->__set('id_usuario', $id_usuario);
+        
+        // Busca todos os produtos
+        $produtos = $produto->getAll();
+        
+        // Calcula estatísticas
+        $valorTotal = 0;
+        $totalQuantidade = 0;
+        $estoqueBaixo = 0;
+        
+        foreach ($produtos as $p) {
+            $valorTotal += $p['valor'] * $p['quantidade'];
+            $totalQuantidade += $p['quantidade'];
+            if ($p['quantidade'] < 10) {
+                $estoqueBaixo++;
+            }
+        }
+        
+        // HTML do relatório
+        $html = '
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Relatório de Estoque</title>
+            <style>
+                body { font-family: Arial, sans-serif; }
+                h1 { color: #2c3e50; text-align: center; }
+                h2 { color: #34495e; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+                table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                th { background-color: #2c3e50; color: white; padding: 10px; }
+                td { border: 1px solid #ddd; padding: 8px; }
+                .total { background-color: #ecf0f1; font-weight: bold; }
+                .baixo { color: #e74c3c; font-weight: bold; }
+            </style>
+        </head>
+        <body>
+            <h1>RELATÓRIO DE ESTOQUE</h1>
+            <p>Data: ' . date('d/m/Y H:i:s') . '</p>
+            
+            <h2>ESTATÍSTICAS GERAIS</h2>
+            <table>
+                <tr><td><strong>Total de Produtos:</strong></td><td>' . count($produtos) . '</td></tr>
+                <tr><td><strong>Total de Unidades:</strong></td><td>' . $totalQuantidade . '</td></tr>
+                <tr><td><strong>Valor Total em Estoque:</strong></td><td>R$ ' . number_format($valorTotal, 2, ',', '.') . '</td></tr>
+                <tr><td><strong>Produtos com Estoque Baixo:</strong></td><td>' . $estoqueBaixo . '</td></tr>
+            </table>
+            
+            <h2>LISTA DE PRODUTOS</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Categoria</th>
+                        <th>Quantidade</th>
+                        <th>Valor Unit.</th>
+                        <th>Valor Total</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>';
+        
+        foreach ($produtos as $p) {
+            $valorUnitario = 'R$ ' . number_format($p['valor'], 2, ',', '.');
+            $valorTotalProduto = 'R$ ' . number_format($p['valor'] * $p['quantidade'], 2, ',', '.');
+            $status = $p['quantidade'] < 10 ? '<span class="baixo">ESTOQUE BAIXO</span>' : 'OK';
+            
+            $html .= '
+                <tr>
+                    <td>' . htmlspecialchars($p['produto']) . '</td>
+                    <td>' . $p['categoria'] . '</td>
+                    <td align="center">' . $p['quantidade'] . '</td>
+                    <td align="right">' . $valorUnitario . '</td>
+                    <td align="right">' . $valorTotalProduto . '</td>
+                    <td>' . $status . '</td>
+                </tr>';
+        }
+        
+        $html .= '
+                <tr class="total">
+                    <td colspan="2"><strong>TOTAL GERAL:</strong></td>
+                    <td align="center">' . $totalQuantidade . '</td>
+                    <td></td>
+                    <td align="right">R$ ' . number_format($valorTotal, 2, ',', '.') . '</td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </body>
+        </html>';
+        
+        // Gerar PDF
+        $dompdf = new \Dompdf\Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        
+        // Download
+        $dompdf->stream("relatorio_estoque_" . date('Y-m-d') . ".pdf", array("Attachment" => true));
+        exit;
     }
 }

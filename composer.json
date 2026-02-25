@@ -1,19 +1,22 @@
 {
-	"name": "mateus/controle-estoque",
-	"require": {
-		"php": ">= 7.0",
-		"mailjet/mailjet-apiv3-php": "^1.6"
-	},
-	"authors": [
-		{
-			"name": "Mateus Silva",
-			"email": "mateus@teste.com.br"
-		}
-	],
-	"autoload": {
-		"psr-4": {
-			"App\\": "App/",
-			"MF\\": "vendor/MF/"
-		}
-	}
+    "name": "mateus/controle-estoque",
+    "description": "Sistema de Controle de Estoque",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "mailjet/mailjet-apiv3-php": "^1.6",
+        "dompdf/dompdf": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/",
+            "MF\\": "vendor/MF/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mateus Silva",
+            "email": "mateus@teste.com.br"
+        }
+    ]
 }

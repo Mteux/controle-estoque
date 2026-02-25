@@ -262,10 +262,10 @@
                     <!-- Botões de Ação -->
                     <div class="row mt-4 mb-5">
                         <div class="col-12 text-center">
-                            <a href="/exportar-relatorio" class="btn btn-success btn-lg">
+                            <button type="button" class="btn btn-success btn-lg" onclick="abrirModalExportar()">
                                 <i class="fas fa-download"></i> Exportar Relatório
-                            </a>
-                            <a href="/dashboard" class="btn btn-secondary btn-lg">
+                            </button>
+                            <a href="/dashboard" class="btn btn-secondary btn-lg ml-2">
                                 <i class="fas fa-arrow-left"></i> Voltar ao Dashboard
                             </a>
                         </div>
@@ -274,6 +274,74 @@
             </div>
         </div>
     </div>
+
+<!-- Modal de Escolha de Formato -->
+<div class="modal fade" id="modalExportar" tabindex="-1" role="dialog" aria-labelledby="modalExportarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="modalExportarLabel">
+                    <i class="fas fa-download"></i> Exportar Relatório
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <p class="lead mb-4">Escolha o formato desejado:</p>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <a href="/exportar-relatorio-csv" class="btn btn-outline-success btn-lg btn-block" style="padding: 20px;">
+                            <i class="fas fa-file-csv fa-3x mb-2"></i><br>
+                            <strong>CSV</strong><br>
+                            <small class="text-muted">Compatível com Excel</small>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <a href="/exportar-relatorio-excel" class="btn btn-outline-success btn-lg btn-block" style="padding: 20px;">
+                            <i class="fas fa-file-excel fa-3x mb-2"></i><br>
+                            <strong>Excel (XLS)</strong><br>
+                            <small class="text-muted">Formato Excel</small>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <a href="/exportar-relatorio-pdf" class="btn btn-outline-danger btn-lg btn-block" style="padding: 15px;">
+                            <i class="fas fa-file-pdf"></i> Exportar como PDF
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Função para abrir o modal de exportação
+function abrirModalExportar() {
+    $('#modalExportar').modal('show');
+}
+
+// Se quiser abrir o modal automaticamente ao clicar no botão de exportar
+document.addEventListener('DOMContentLoaded', function() {
+    let btnExportar = document.querySelector('a[href="/exportar-relatorio"]');
+    if (btnExportar) {
+        btnExportar.addEventListener('click', function(e) {
+            e.preventDefault();
+            abrirModalExportar();
+        });
+    }
+});
+</script>
 
     <style>
     /* Estilos adicionais específicos para relatórios */
@@ -346,4 +414,6 @@
     .text-info { color: var(--secondary-color) !important; }
     .text-primary { color: var(--primary-color) !important; }
     </style>
+
+
 </body>
