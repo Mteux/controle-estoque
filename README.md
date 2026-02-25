@@ -90,3 +90,118 @@ Este sistema de controle de estoque foi desenvolvido para facilitar o gerenciame
 ---
 
 ## 📁 Estrutura do Projeto
+
+📦 controle-estoque
+├── 📂 App
+│ ├── 📂 Controllers # Controladores do sistema
+│ │ ├── AppController.php
+│ │ ├── AuthController.php
+│ │ └── IndexController.php
+│ ├── 📂 Models # Modelos do banco de dados
+│ │ ├── Produto.php
+│ │ └── Usuario.php
+│ ├── 📂 Views # Arquivos de visualização (.phtml)
+│ │ ├── 📂 app # Views do AppController
+│ │ │ ├── adicionar.phtml
+│ │ │ ├── dashboard.phtml
+│ │ │ ├── editar.phtml
+│ │ │ ├── feedback.phtml
+│ │ │ └── relatorios.phtml
+│ │ └── 📂 index # Views do IndexController
+│ │ ├── index.phtml
+│ │ └── inscreverse.phtml
+│ └── Connection.php # Configuração do banco
+├── 📂 public # Arquivos públicos
+│ ├── 📂 css # Estilos
+│ │ └── style.css
+│ ├── 📂 img # Imagens
+│ │ └── logo.png
+│ ├── 📂 script # Scripts JavaScript
+│ │ └── script.js
+│ └── index.php # Ponto de entrada
+├── 📂 vendor # Dependências (Composer)
+├── composer.json # Configuração do Composer
+└── README.md # Documentação
+
+
+
+---
+
+## ⚙️ Pré-requisitos
+
+Antes de começar, você precisa ter instalado em sua máquina:
+
+- [![XAMPP](https://img.shields.io/badge/XAMPP-8.2-FB7A24?style=flat-square&logo=xampp&logoColor=white)](https://www.apachefriends.org/) - Servidor Apache + MySQL + PHP
+- [![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?style=flat-square&logo=php&logoColor=white)](https://www.php.net/) - Linguagem
+- [![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql&logoColor=white)](https://www.mysql.com/) - Banco de dados
+- [![Composer](https://img.shields.io/badge/Composer-2.0-885630?style=flat-square&logo=composer&logoColor=white)](https://getcomposer.org/) - Gerenciador de dependências
+- Navegador moderno (Chrome, Firefox, Edge)
+
+---
+
+## 🚀 Instalação e Configuração
+
+### 1. Clone o repositório
+```bash
+git clone https://github.com/mateusilva/controle-estoque.git
+cd controle-estoque
+
+2. Configure o XAMPP
+Mova a pasta do projeto para C:\xampp\htdocs\controle-estoque
+
+Inicie o Apache e MySQL no XAMPP Control Panel
+
+3. Configure o banco de dados
+Acesse o phpMyAdmin: http://localhost/phpmyadmin
+
+Execute o script SQL para criar o banco e tabelas:
+
+CREATE DATABASE controle_estoque;
+USE controle_estoque;
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE produtos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    produto VARCHAR(100) NOT NULL,
+    valor DECIMAL(10,2) NOT NULL,
+    quantidade INT NOT NULL,
+    categoria VARCHAR(50) NOT NULL,
+    descricao TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+);
+
+4. Configure o arquivo de conexão
+No arquivo App/Connection.php, ajuste se necessário:
+
+$host = 'localhost';
+$dbname = 'controle_estoque';
+$user = 'root';
+$pass = ''; // Senha do MySQL (vazia no XAMPP)
+
+5. Instale as dependências
+
+# Entre na pasta do projeto
+cd C:\xampp\htdocs\controle-estoque
+
+# Instale o DOMPDF (para PDF)
+php composer.phar require dompdf/dompdf
+
+# Se não tiver o composer.phar, baixe primeiro
+php -r "copy('https://getcomposer.org/composer.phar', 'composer.phar');"
+
+6. Inicie o servidor
+
+cd C:\xampp\htdocs\controle-estoque\public
+php -S localhost:8080
+
+7. Acesse o sistema
+Abra o navegador e acesse: http://localhost:8080
