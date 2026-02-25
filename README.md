@@ -91,39 +91,39 @@ Este sistema de controle de estoque foi desenvolvido para facilitar o gerenciame
 
 ## 📁 Estrutura do Projeto
 
+```
 📦 controle-estoque
 ├── 📂 App
-│ ├── 📂 Controllers # Controladores do sistema
-│ │ ├── AppController.php
-│ │ ├── AuthController.php
-│ │ └── IndexController.php
-│ ├── 📂 Models # Modelos do banco de dados
-│ │ ├── Produto.php
-│ │ └── Usuario.php
-│ ├── 📂 Views # Arquivos de visualização (.phtml)
-│ │ ├── 📂 app # Views do AppController
-│ │ │ ├── adicionar.phtml
-│ │ │ ├── dashboard.phtml
-│ │ │ ├── editar.phtml
-│ │ │ ├── feedback.phtml
-│ │ │ └── relatorios.phtml
-│ │ └── 📂 index # Views do IndexController
-│ │ ├── index.phtml
-│ │ └── inscreverse.phtml
-│ └── Connection.php # Configuração do banco
-├── 📂 public # Arquivos públicos
-│ ├── 📂 css # Estilos
-│ │ └── style.css
-│ ├── 📂 img # Imagens
-│ │ └── logo.png
-│ ├── 📂 script # Scripts JavaScript
-│ │ └── script.js
-│ └── index.php # Ponto de entrada
-├── 📂 vendor # Dependências (Composer)
-├── composer.json # Configuração do Composer
-└── README.md # Documentação
-
-
+│   ├── 📂 Controllers      # Controladores do sistema
+│   │   ├── AppController.php
+│   │   ├── AuthController.php
+│   │   └── IndexController.php
+│   ├── 📂 Models           # Modelos do banco de dados
+│   │   ├── Produto.php
+│   │   └── Usuario.php
+│   ├── 📂 Views            # Arquivos de visualização (.phtml)
+│   │   ├── 📂 app          # Views do AppController
+│   │   │   ├── adicionar.phtml
+│   │   │   ├── dashboard.phtml
+│   │   │   ├── editar.phtml
+│   │   │   ├── feedback.phtml
+│   │   │   └── relatorios.phtml
+│   │   └── 📂 index        # Views do IndexController
+│   │       ├── index.phtml
+│   │       └── inscreverse.phtml
+│   └── Connection.php      # Configuração do banco
+├── 📂 public               # Arquivos públicos
+│   ├── 📂 css              # Estilos
+│   │   └── style.css
+│   ├── 📂 img              # Imagens
+│   │   └── logo.png
+│   ├── 📂 script           # Scripts JavaScript
+│   │   └── script.js
+│   └── index.php           # Ponto de entrada
+├── 📂 vendor               # Dependências (Composer)
+├── composer.json           # Configuração do Composer
+└── README.md               # Documentação
+```
 
 ---
 
@@ -145,17 +145,16 @@ Antes de começar, você precisa ter instalado em sua máquina:
 ```bash
 git clone https://github.com/mateusilva/controle-estoque.git
 cd controle-estoque
+```
 
-2. Configure o XAMPP
-Mova a pasta do projeto para C:\xampp\htdocs\controle-estoque
+### 2. Configure o XAMPP
+- Mova a pasta do projeto para `C:\xampp\htdocs\controle-estoque`
+- Inicie o Apache e MySQL no XAMPP Control Panel
 
-Inicie o Apache e MySQL no XAMPP Control Panel
-
-3. Configure o banco de dados
-Acesse o phpMyAdmin: http://localhost/phpmyadmin
-
-Execute o script SQL para criar o banco e tabelas:
-
+### 3. Configure o banco de dados
+- Acesse o phpMyAdmin: `http://localhost/phpmyadmin`
+- Execute o script SQL para criar o banco e tabelas:
+```sql
 CREATE DATABASE controle_estoque;
 USE controle_estoque;
 
@@ -178,17 +177,19 @@ CREATE TABLE produtos (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
 );
+```
 
-4. Configure o arquivo de conexão
-No arquivo App/Connection.php, ajuste se necessário:
-
+### 4. Configure o arquivo de conexão
+No arquivo `App/Connection.php`, ajuste se necessário:
+```php
 $host = 'localhost';
 $dbname = 'controle_estoque';
 $user = 'root';
 $pass = ''; // Senha do MySQL (vazia no XAMPP)
+```
 
-5. Instale as dependências
-
+### 5. Instale as dependências
+```bash
 # Entre na pasta do projeto
 cd C:\xampp\htdocs\controle-estoque
 
@@ -197,11 +198,115 @@ php composer.phar require dompdf/dompdf
 
 # Se não tiver o composer.phar, baixe primeiro
 php -r "copy('https://getcomposer.org/composer.phar', 'composer.phar');"
+```
 
-6. Inicie o servidor
-
+### 6. Inicie o servidor
+```bash
 cd C:\xampp\htdocs\controle-estoque\public
 php -S localhost:8080
+```
 
-7. Acesse o sistema
-Abra o navegador e acesse: http://localhost:8080
+### 7. Acesse o sistema
+Abra o navegador e acesse: `http://localhost:8080`
+
+---
+
+## 📖 Como Usar
+
+### **Primeiro Acesso**
+1. Acesse `http://localhost:8080/inscreverse`
+2. Crie uma nova conta (nome, email, senha)
+3. Faça login com suas credenciais
+
+### **Gerenciando Produtos**
+- **Adicionar:** Clique em "Adicionar" no menu lateral
+- **Listar:** Dashboard mostra todos os produtos
+- **Filtrar:** Clique em "Filtrar" e selecione critérios
+- **Editar:** Clique no ícone ✏️ do produto
+- **Excluir:** Clique no ícone 🗑️ do produto (confirme)
+
+### **Relatórios**
+- Acesse "Relatórios" no menu lateral
+- Visualize estatísticas completas
+- Clique em "Exportar" e escolha o formato:
+  - **CSV** - Para abrir no Excel
+  - **Excel** - Formato XLS
+  - **PDF** - Documento formatado
+
+### **Feedback**
+- Envie sugestões ou reporte bugs pela página "Feedback"
+- O sistema envia um email com sua mensagem
+
+---
+
+## 📸 Capturas de Tela
+
+*(Adicione aqui as imagens do seu sistema)*
+
+### Tela de Login
+![Login](screenshots/login.png)
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Relatórios
+![Relatórios](screenshots/relatorios.png)
+
+### Exportação PDF
+![PDF](screenshots/pdf.png)
+
+---
+
+## 🔮 Funcionalidades Futuras
+
+- [ ] 📊 **Gráficos interativos** (Chart.js)
+- [ ] 🔔 **Alertas de estoque mínimo** (notificações)
+- [ ] 📈 **Histórico de movimentações** (entradas/saídas)
+- [ ] 🏷️ **Múltiplos preços** (custo x venda)
+- [ ] 📱 **Layout responsivo melhorado**
+- [ ] 🔍 **Busca avançada com múltiplos critérios**
+- [ ] 👥 **Múltiplos usuários com permissões**
+- [ ] 📦 **Controle de fornecedores**
+- [ ] 📎 **Upload de imagens para produtos**
+- [ ] 📊 **Comparativo de períodos**
+
+---
+
+## 🤝 Contribuição
+
+Contribuições são sempre bem-vindas! Se você tem alguma sugestão para melhorar o projeto:
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+---
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 📫 Contato
+
+**Mateus Silva** - [mateus@teste.com.br](mailto:mateus@teste.com.br)
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/seu-perfil)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/mateusilva)
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/seu-perfil)
+
+---
+
+## 🙏 Agradecimentos
+
+- À comunidade Open Source por todas as bibliotecas incríveis
+- A todos que testaram e contribuíram com feedbacks
+- [FontAwesome](https://fontawesome.com/) pelos ícones
+- [Bootstrap](https://getbootstrap.com/) pelo framework
+
+---
+
+**⭐️ Se este projeto te ajudou, dê uma estrela no GitHub!** ⭐️
