@@ -248,13 +248,16 @@ Abra o navegador e acesse: `http://localhost:8080`
 
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.png)
+<img width="1917" height="909" alt="image" src="https://github.com/user-attachments/assets/2fe6ef12-84c8-4538-8d35-8b40289715cf" />
+
 
 ### Relatórios
-![Relatórios](screenshots/relatorios.png)
+<img width="1911" height="898" alt="image" src="https://github.com/user-attachments/assets/392207ed-304e-4d12-b58d-176cdd032d29" />
+
 
 ### Exportação PDF
-![PDF](screenshots/pdf.png)
+<img width="1915" height="902" alt="image" src="https://github.com/user-attachments/assets/2c9b1be0-1262-43ae-bd40-add1e6297783" />
+
 
 ---
 
@@ -293,11 +296,11 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 📫 Contato
 
-**Mateus Silva** - [mateus@teste.com.br](mailto:mateus@teste.com.br)
+**Mateus Silva** - smateus2605@gmail.com
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/seu-perfil)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/mateusilva)
-[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/seu-perfil)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/mfsa)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MTeux)
+
 
 ---
 
