@@ -299,56 +299,70 @@ class AppController extends Action
     /**
          * Exibe a página de relatórios
          */
-        public function exportar()
-        {
-            $this->initSession();
+        /**
+ * Exibe a página de relatórios com estatísticas do estoque
+ */
+    public function relatorios()
+    {
+        $this->initSession();
 
-            if (empty($_SESSION['id'])) {
-                header('Location: /?login=erro');
-                return;
-            }
-            
-            $id_usuario = $_SESSION['id'];
-            $produto = Container::getModel('Produto');
-            $produto->__set('id_usuario', $id_usuario);
-            
-            // Busca todos os produtos
-            $produtos = $produto->getAll();
-            
-            // Nome do arquivo
-            $filename = 'produtos_' . date('Y-m-d') . '.xls';
-            
-            // Headers para download
-            header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
-            header('Content-Disposition: attachment; filename="' . $filename . '"');
-            header('Cache-Control: max-age=0');
-            
-            // ADICIONAR BOM PARA UTF-8 (ISSO RESOLVE O PROBLEMA)
-            echo "\xEF\xBB\xBF"; // BOM para UTF-8
-            
-            // Inicia a tabela HTML
-            echo '<table border="1">';
-            echo '<tr>
-                    <th>Produto</th>
-                    <th>Valor</th>
-                    <th>Quantidade</th>
-                    <th>Categoria</th>
-                    <th>Descrição</th>
-                </tr>';
-
-            foreach ($produtos as $produto) {
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($produto['produto']) . "</td>";
-                echo "<td>R$ " . number_format($produto['valor'], 2, ',', '.') . "</td>";
-                echo "<td>" . $produto['quantidade'] . "</td>";
-                echo "<td>" . htmlspecialchars($produto['categoria']) . "</td>";
-                echo "<td>" . htmlspecialchars($produto['descricao']) . "</td>";
-                echo "</tr>";
-            }
-
-            echo "</table>";
-            exit;
+        if (empty($_SESSION['id'])) {
+            header('Location: /?login=erro');
+            return;
         }
+        
+        $id_usuario = $_SESSION['id'];
+        $produto = Container::getModel('Produto');
+        $produto->__set('id_usuario', $id_usuario);
+        
+        // Busca todos os produtos do usuário
+        $this->view->produtos = $produto->getAll();
+        
+        // Inicializa variáveis de estatísticas
+        $totalProdutos = count($this->view->produtos);
+        $valorTotal = 0;
+        $totalQuantidade = 0;
+        $estoqueBaixo = 0;
+        $categorias = [];
+        $valores = [];
+        
+        // Calcula estatísticas
+        foreach ($this->view->produtos as $p) {
+            $valorTotal += $p['valor'] * $p['quantidade'];
+            $totalQuantidade += $p['quantidade'];
+            $valores[] = $p['valor'];
+            
+            // Conta produtos com estoque baixo (< 10 unidades)
+            if ($p['quantidade'] < 10) {
+                $estoqueBaixo++;
+            }
+            
+            // Agrupa por categoria
+            $cat = $p['categoria'];
+            if (!isset($categorias[$cat])) {
+                $categorias[$cat] = 0;
+            }
+            $categorias[$cat]++;
+        }
+        
+        // Define valores padrão se não houver produtos
+        $produtoMaisCaro = !empty($valores) ? max($valores) : 0;
+        $produtoMaisBarato = !empty($valores) ? min($valores) : 0;
+        
+        // Prepara array com todas as estatísticas
+        $this->view->stats = [
+            'total_produtos' => $totalProdutos,
+            'total_quantidade' => $totalQuantidade,
+            'valor_total' => $valorTotal,
+            'estoque_baixo' => $estoqueBaixo,
+            'categorias' => $categorias,
+            'produto_mais_caro' => $produtoMaisCaro,
+            'produto_mais_barato' => $produtoMaisBarato
+        ];
+        
+        // Renderiza a view de relatórios
+        $this->render('relatorios');
+    }
 
     /**
      * Exporta relatório em formato CSV
