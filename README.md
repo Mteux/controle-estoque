@@ -244,7 +244,8 @@ Abra o navegador e acesse: `http://localhost:8080`
 *(Adicione aqui as imagens do seu sistema)*
 
 ### Tela de Login
-![Login](screenshots/login.png)
+<img width="1916" height="902" alt="image" src="https://github.com/user-attachments/assets/f62d8657-b78b-40c8-a159-4b8ddcb3ca0c" />
+
 
 ### Dashboard
 ![Dashboard](screenshots/dashboard.png)
